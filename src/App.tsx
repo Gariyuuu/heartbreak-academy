@@ -19,6 +19,7 @@ import { TitleScreen } from "./ui/screens/TitleScreen";
 import { CharacterCreateScreen } from "./ui/screens/CharacterCreateScreen";
 import { OpeningCutscene } from "./ui/screens/OpeningCutscene";
 import { ExtrasScreen } from "./ui/screens/ExtrasScreen";
+import { HowToPlayScreen } from "./ui/screens/HowToPlayScreen";
 import { GameOverScreen } from "./ui/screens/GameOverScreen";
 import { EndingScreen } from "./ui/screens/EndingScreen";
 import { DebugPanel } from "./ui/debug/DebugPanel";
@@ -68,6 +69,7 @@ function App() {
       <SaveScreen />
       <SettingsScreen />
       <ExtrasScreen />
+      <HowToPlayScreen />
       <GameOverScreen />
       <Toast />
       {import.meta.env.DEV && <DebugPanel />}

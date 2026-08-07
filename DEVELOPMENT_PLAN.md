@@ -291,7 +291,19 @@ playable state, not a broken intermediate one.
       2-tone checkerboard. See CHANGELOG 0.22.0 for the full breakdown,
       including a real `fillGradientStyle` rendering bug caught by
       actually looking at a screenshot rather than trusting build/lint.
-- [ ] **Phase 29+** — A broader accessibility pass beyond what's fixed so
+- [x] **Phase 29** — Onboarding + balance pass, direct from user feedback
+      (stuck with no guidance, first monster too hard, wanted more
+      detail): a new How to Play screen (title + pause menu), a one-time
+      first-battle tutorial primer reusing 0.18.0's dynamic-`introLines`
+      capability, Stray Thought's `attackDamage` softened 2→1, directional
+      wall-adjacency shadows in `TileRenderer.ts`, and a uniform glossy
+      highlight on every monster shape. Also fixed a real pre-existing
+      bug this surfaced: `BattleScene`'s mid-battle pause freeze
+      (0.20.0) only matched `menuOpen === "pause"`, so opening Inventory/
+      Phone/Save/Settings mid-fight (all reachable from the pause hub)
+      silently let the dodge phase keep running behind them since 0.20.0
+      shipped. See CHANGELOG 0.23.0.
+- [ ] **Phase 30+** — A broader accessibility pass beyond what's fixed so
       far (keyboard remapping — keys are fixed, not rebindable —
       screen-reader semantics for the DOM UI layer, contrast auditing) —
       not started (see "What's Next" below)
@@ -308,11 +320,12 @@ Stray Equation, The Accumulation), six regular enemies, two puzzle types,
 a save/autosave system, inventory/equipment with real stat effects, a
 phone with route-reactive messages, an endings system (10 endings, with a
 gallery tab in Extras), real procedural music (4 tracks, with a preview
-tab in Extras), a mid-battle pause with a real accessibility fix behind
-it, New Game+, a genuinely fullscreen presentation with real humanoid
-sprites and textured maps, and a route/consequence tracker that quietly
-feeds dialogue throughout. Verified end-to-end with Playwright plus a
-from-scratch map-connectivity validator, not just typechecked.
+tab in Extras), a mid-battle pause that correctly freezes for every menu
+reachable from it, New Game+, a genuinely fullscreen presentation with
+real humanoid sprites and textured/shadowed maps, a How to Play screen
+and first-battle tutorial primer, and a route/consequence tracker that
+quietly feeds dialogue throughout. Verified end-to-end with Playwright
+plus a from-scratch map-connectivity validator, not just typechecked.
 
 ## What's Next (honest scope note)
 

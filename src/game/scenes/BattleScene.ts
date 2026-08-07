@@ -161,14 +161,19 @@ export class BattleScene extends Phaser.Scene {
     // Pausing mid-battle (X/Escape) was previously impossible — the input
     // was read but never checked here, so bullets and the dodge-phase
     // timer kept running no matter what a player pressed. Freeze
-    // everything below while paused, same as OverworldScene's uiBlocking.
-    if (store.ui.menuOpen === "pause") {
+    // everything below whenever ANY menu overlay is open, not just the
+    // pause hub itself — Inventory/Phone/Save/Settings are all reachable
+    // from the pause hub mid-battle too, and each has its own "back"
+    // step that lands on menuOpen:"pause" before finally closing, so
+    // checking only for "pause" left the dodge phase silently running
+    // behind whichever sub-screen was actually open.
+    if (store.ui.menuOpen !== "none") {
       this.wasPausedLastFrame = true;
       return;
     }
     if (this.wasPausedLastFrame) {
-      // The same X press that just closed the pause overlay (via its own
-      // window keydown listener) is still flagged "just pressed" here —
+      // The same X press that just closed the menu (via its own window
+      // keydown listener) is still flagged "just pressed" here —
       // InputManager and the overlay both react to one physical keydown,
       // and this frame runs after the overlay's synchronous handler
       // already flipped menuOpen back to "none". Consume it without

@@ -31,6 +31,9 @@ export function PauseMenu() {
           <button className="hba-btn" onClick={() => setMenu("settings")}>
             ⚙️ Settings
           </button>
+          <button className="hba-btn" onClick={() => setMenu("howToPlay")}>
+            ❓ How to Play
+          </button>
         </div>
         <div className="menu-close-row">
           <button

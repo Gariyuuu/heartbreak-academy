@@ -21,12 +21,15 @@ keyboard-navigable; two real accessibility fixes (a dead flash-effects
 setting, and no way to pause mid-battle); and a full presentation pass —
 genuinely fullscreen (no letterboxing or dead space on any map/window
 size), real head+torso humanoid sprites with hairstyle/uniform
-customization that actually renders, textured map tiles instead of a flat
-checkerboard, and faster dialogue. A broader accessibility pass (keyboard
-remapping, screen-reader semantics, contrast auditing) is the one item
-from the design doc's scope with no dedicated work yet (see
-`DEVELOPMENT_PLAN.md` for full scope and what's still ahead, and
-`CHANGELOG.md` for what's shipped so far, most recently `[0.22.0]`).
+customization that actually renders, textured/shadowed map tiles instead
+of a flat checkerboard, and faster dialogue; and a real onboarding pass —
+a How to Play screen, a first-battle tutorial primer, and the first
+enemy softened, since none of that existed before and it showed. A
+broader accessibility pass (keyboard remapping, screen-reader semantics,
+contrast auditing) is the one item from the design doc's scope with no
+dedicated work yet (see `DEVELOPMENT_PLAN.md` for full scope and what's
+still ahead, and `CHANGELOG.md` for what's shipped so far, most recently
+`[0.23.0]`).
 
 ## Features
 
@@ -101,6 +104,10 @@ from the design doc's scope with no dedicated work yet (see
   and ITEM submenus) is fully navigable by keyboard alone — W/S or arrow
   keys cycle, Z/Enter confirms, matching the same input-island convention
   dialogue already used
+- A How to Play screen (title screen and pause menu) covering controls,
+  where to find your quest log, and the full FIGHT/ACT/ITEM/GUARD/SPARE/
+  FLEE system — plus a one-time tutorial primer woven into the first
+  battle's intro text
 - A dev-only debug menu (`F1`) for teleporting, healing, giving items,
   setting flags, and forcing encounters
 

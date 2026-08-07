@@ -8,13 +8,25 @@ export const strayThought: EnemyDef = {
   name: "Stray Thought",
   title: "A small drifting worry",
   maxHp: 18,
-  attackDamage: 2,
+  // Softened from 2: this is nearly every player's literal first fight,
+  // with zero in-game explanation before this session's How to Play
+  // screen existed — first contact needs to be forgiving, not just the
+  // numbers "technically" balanced.
+  attackDamage: 1,
   defense: 1,
   isBoss: false,
   canFlee: true,
   fleeSuccessChance: 0.8,
   expReward: 6,
-  introLines: ["A Stray Thought drifts into view, muttering something it won't quite finish saying."],
+  introLines: (store) => {
+    const base = "A Stray Thought drifts into view, muttering something it won't quite finish saying.";
+    if (store.save.flags["tutorial_battle_seen"]) return [base];
+    store.setFlag("tutorial_battle_seen", true);
+    return [
+      base,
+      "First fight — quick primer: FIGHT and SPARE are both real ways to end this, not a right answer and a wrong one. ACT (talk instead of attack) is the only way to unlock SPARE — enough of the right choices there shifts its mood past whatever it needs. GUARD and FLEE cost nothing to try if a fight is going badly. Full rules any time from the pause menu's How to Play.",
+    ];
+  },
   defeatLines: ["The Stray Thought scatters into quiet static.", "It didn't get to finish its sentence."],
   spareResponseLines: [
     "It finally finishes the thought — something small and unremarkable — and drifts off, lighter.",

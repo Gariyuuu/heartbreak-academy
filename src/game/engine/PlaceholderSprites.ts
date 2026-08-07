@@ -387,6 +387,12 @@ function drawShape(g: Phaser.GameObjects.Graphics, shape: TokenShape, body: numb
     }
   }
 
+  // uniform glossy highlight — a small light patch, top-left, on every
+  // abstract monster shape. Cheap and shape-agnostic, but it's the
+  // difference between "flat colored icon" and "something with a surface."
+  g.fillStyle(0xffffff, 0.25);
+  g.fillEllipse(R - 5, R - 11, 6, 4);
+
   // simple face: two eyes, gives every token a "someone's home" quality
   g.fillStyle(accent, 1);
   g.fillCircle(R - 6, R - 4, 2.5);

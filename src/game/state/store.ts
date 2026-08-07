@@ -41,7 +41,7 @@ interface UiState {
   dialogueOpen: boolean;
   currentLine: ActiveDialogueLine | null;
   selectedChoiceIndex: number;
-  menuOpen: "none" | "pause" | "inventory" | "phone" | "save" | "settings" | "extras";
+  menuOpen: "none" | "pause" | "inventory" | "phone" | "save" | "settings" | "extras" | "howToPlay";
   toast: string | null;
   puzzleId: string | null;
 }

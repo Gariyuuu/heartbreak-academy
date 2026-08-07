@@ -8,13 +8,23 @@ semantic versioning for a pre-1.0 project.
 
 ### Known debt
 - All visual assets are still placeholder (DOM/SVG portraits, Phaser-drawn
-  sprites and tiles, no image-generation tool available), but a real
-  presentation pass (0.22.0) took them well past "geometric primitive":
-  humanoid player/NPC sprites with hairstyle/uniform customization that
-  actually renders, and map tiles with real texture instead of a flat
-  checkerboard. Audio is fully real but procedurally synthesized end to
-  end (SFX and 4 music tracks, 0.19.0) — no recorded instruments or mixed
-  tracks exist.
+  sprites and tiles) — **there is no image-generation tool available in
+  this environment, so no actual PNG/raster art can be produced here.**
+  What exists instead, and has gotten real investment across two passes
+  (0.22.0, 0.23.0): humanoid player/NPC sprites with hairstyle/uniform
+  customization that actually renders, a uniform glossy highlight on every
+  monster shape, and map tiles with real texture (grain, panel seams,
+  directional wall-adjacency shadows) instead of a flat checkerboard. If
+  real art assets are ever produced externally (commissioned, hand-drawn,
+  generated with a dedicated image tool) and supplied as files, they'd
+  slot into `PlaceholderSprites.ts`/`TileRenderer.ts`'s existing texture
+  keys without touching any game logic — that boundary is deliberate.
+  Audio is fully real but procedurally synthesized end to end (SFX and 4
+  music tracks, 0.19.0) — no recorded instruments or mixed tracks exist.
+- There was no in-game explanation of any system until 0.23.0 — a new
+  How to Play screen (title screen and pause menu) plus a one-time
+  primer woven into the first battle's intro text are the first onboarding
+  this project has ever had.
 - Accessibility settings are now all genuinely wired (`flashEffects` was
   the last dead one, fixed in 0.20.0, which also added the ability to
   pause mid-battle). Battle menus are now fully keyboard-navigable
@@ -44,6 +54,60 @@ semantic versioning for a pre-1.0 project.
   functional with real content (~35 achievements, 10 endings, 4 tracks).
 - Bundle is a single ~1.54MB chunk (Phaser is the bulk of it); code-splitting
   would help but wasn't a priority for this pass.
+
+## [0.23.0] — Onboarding, Balance, and a Real Bug Found While Fixing It
+More direct user feedback: stuck with no idea how to progress, the first
+monster already felt too hard, and the maps/monsters needed more detail
+still. Five changes, one of them a real pre-existing bug caught while
+building the others.
+
+**How to Play screen.** New `ui/screens/HowToPlayScreen.tsx`, reachable
+from both the title screen and the pause menu (`menuOpen: "howToPlay"`,
+a new member of that union). Covers movement/interact, where to find the
+quest log (pause → Phone → Quests — that tab existed since early in the
+project but was never surfaced anywhere else), and a full FIGHT/ACT/ITEM/
+GUARD/SPARE/FLEE explainer, foregrounding the one thing that was never
+stated anywhere in-game before: **ACT is the only way to unlock SPARE** —
+it doesn't happen by waiting, and FIGHT isn't "the wrong choice."
+
+**First-battle tutorial.** `EnemyDef.introLines` being a function of
+`GameStore` (added in 0.18.0 for The Accumulation's meta-aware intro) got
+reused for something much more load-bearing: Stray Thought — the
+practically-universal first encounter — now appends a one-time primer
+line on a player's literal first fight, gated on a new
+`tutorial_battle_seen` flag so it never repeats. Doesn't replace the full
+How to Play screen; it's the "in case you never open a menu" version.
+
+**Stray Thought rebalanced.** `attackDamage` 2 → 1. This is nearly every
+player's first fight, with (until this pass) zero in-game explanation
+beforehand — first contact needed to be forgiving on the numbers too, not
+just less confusing.
+
+**More map/monster detail.** `TileRenderer.ts` gained directional
+wall-adjacency shadows: floor tiles next to a wall now get a soft
+gradient cast from whichever edge the wall is on (one shared, direction-
+agnostic texture, rotated per edge at placement — not a new cached
+texture per direction, which would have multiplied the tile-texture
+count for no real benefit). Rooms read as rooms with walls around them
+now, not a flat plane with wall-colored tiles scattered on it.
+`PlaceholderSprites.ts`'s monster shapes (cloud, diamond, star, shard,
+glitch, mask, ring) all gained a small uniform glossy highlight — cheap,
+shape-agnostic, applied once in the shared tail of `drawShape()` rather
+than per-case.
+
+**Real bug found and fixed:** building the How to Play screen's pause-
+menu entry point surfaced that `BattleScene.ts`'s mid-battle pause freeze
+(0.20.0) only checked `menuOpen === "pause"` — but Inventory, Phone, Save,
+and Settings are all reachable from the pause hub mid-battle, and each is
+its own `menuOpen` value that isn't literally `"pause"`. Opening Inventory
+mid-fight was silently letting the dodge phase keep running behind it
+since 0.20.0 shipped; nobody had reported it, but it's the exact class of
+bug this project has run into repeatedly (see 0.6.0, 0.12.0) — a check
+that's specific where it needed to be general. Fixed by freezing whenever
+`menuOpen !== "none"` instead of matching one literal value. Verified with
+Playwright: opened How to Play mid-battle, confirmed player HP is
+unchanged after a 1.5s wait with the overlay open, confirmed the dodge
+phase resumes and completes normally afterward.
 
 ## [0.22.0] — Presentation Pass: Speed, Fullscreen, Real Sprites, Real Maps
 Direct user feedback: "dialogue too slow, the character has no

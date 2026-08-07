@@ -153,6 +153,26 @@ function tileTextureKey(
   );
 }
 
+// A soft directional shadow, cast onto floor tiles that sit next to a
+// wall — one shared texture (theme/direction-independent), rotated per
+// edge at placement time. This is what makes a room read as a room with
+// walls around it instead of a flat plane with wall-colored tiles
+// scattered on top.
+function ensureEdgeShadowTexture(scene: Phaser.Scene, size: number): string {
+  const key = `edge-shadow:${size}`;
+  if (scene.textures.exists(key)) return key;
+  const g = scene.add.graphics();
+  const depthPx = Math.round(size * 0.4);
+  for (let y = 0; y < depthPx; y++) {
+    const alpha = 0.26 * (1 - y / depthPx);
+    g.fillStyle(0x000000, alpha);
+    g.fillRect(0, y, size, 1);
+  }
+  g.generateTexture(key, size, size);
+  g.destroy();
+  return key;
+}
+
 export interface CollisionGrid {
   tileSize: number;
   cols: number;
@@ -168,6 +188,8 @@ export function renderMap(scene: Phaser.Scene, map: MapDefinition): CollisionGri
   const themeId = map.theme ?? "academy";
   const theme = MAP_THEMES[themeId] ?? MAP_THEMES.academy;
 
+  const shadowKey = ensureEdgeShadowTexture(scene, tileSize);
+
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       const char = grid[row][col];
@@ -177,9 +199,17 @@ export function renderMap(scene: Phaser.Scene, map: MapDefinition): CollisionGri
       const variantRange = char === "." ? 24 : 2;
       const variant = (row * 7 + col * 13) % variantRange;
       const key = tileTextureKey(scene, char, tileSize, variant, themeId, theme);
-      scene.add
-        .image(col * tileSize + tileSize / 2, row * tileSize + tileSize / 2, key)
-        .setDepth(0);
+      const px = col * tileSize + tileSize / 2;
+      const py = row * tileSize + tileSize / 2;
+      scene.add.image(px, py, key).setDepth(0);
+
+      if (char === ".") {
+        const isWall = (c: number, r: number) => (grid[r]?.[c] ?? "#") === "#";
+        if (isWall(col, row - 1)) scene.add.image(px, py, shadowKey).setAngle(0).setDepth(0.5);
+        if (isWall(col, row + 1)) scene.add.image(px, py, shadowKey).setAngle(180).setDepth(0.5);
+        if (isWall(col - 1, row)) scene.add.image(px, py, shadowKey).setAngle(-90).setDepth(0.5);
+        if (isWall(col + 1, row)) scene.add.image(px, py, shadowKey).setAngle(90).setDepth(0.5);
+      }
     }
   }
 

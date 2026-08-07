@@ -44,6 +44,9 @@ export function TitleScreen() {
           <button className="hba-btn title-btn" onClick={() => setPhase("characterCreate")}>
             NEW GAME
           </button>
+          <button className="hba-btn title-btn" onClick={() => setMenu("howToPlay")}>
+            HOW TO PLAY
+          </button>
           <button className="hba-btn title-btn" onClick={() => setMenu("extras")}>
             EXTRAS
           </button>
@@ -52,7 +55,7 @@ export function TitleScreen() {
           </button>
         </div>
       </div>
-      <div className="title-footer">HEART//BREAK ACADEMY — v0.22.0</div>
+      <div className="title-footer">HEART//BREAK ACADEMY — v0.23.0</div>
     </div>
   );
 }
