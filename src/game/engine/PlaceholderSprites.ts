@@ -16,27 +16,177 @@ export type TokenShape =
   | "mask"
   | "ring";
 
+export type Hairstyle = "short" | "long" | "twin-tails" | "undercut";
+export type UniformVariant = "standard" | "cardigan" | "blazer";
+
+// Character-creation stores these as display labels ("Twin-tails",
+// "Casual Cardigan") since that's what the UI shows; normalize to the
+// internal keys the sprite drawer understands.
+export function normalizeHairstyle(label: string): Hairstyle {
+  const l = label.toLowerCase();
+  if (l.includes("long")) return "long";
+  if (l.includes("twin")) return "twin-tails";
+  if (l.includes("undercut")) return "undercut";
+  return "short";
+}
+export function normalizeUniform(label: string): UniformVariant {
+  const l = label.toLowerCase();
+  if (l.includes("cardigan")) return "cardigan";
+  if (l.includes("blazer")) return "blazer";
+  return "standard";
+}
+
+// Every human character (the player, and any named NPC who isn't an
+// abstract anomaly/monster) is drawn as a head+torso humanoid instead of
+// a single flat primitive — a bare circle or star reads as a token, not a
+// person. Monsters/anomalies keep the abstract TokenShape system below;
+// it's thematically correct for them (a "Stray Thought" *should* look
+// like a drifting shape, not a person) and was never the complaint.
+const HUMAN_CHARACTERS: Record<string, { hairstyle: Hairstyle; uniform: UniformVariant; badge: TokenShape | null }> =
+  {
+    akari: { hairstyle: "long", uniform: "blazer", badge: "diamond" },
+    mika: { hairstyle: "twin-tails", uniform: "cardigan", badge: "star" },
+    sleepy_upperclassman: { hairstyle: "short", uniform: "standard", badge: null },
+    yuna: { hairstyle: "short", uniform: "cardigan", badge: "leaf" },
+    sora: { hairstyle: "undercut", uniform: "standard", badge: "gear" },
+    nana: { hairstyle: "long", uniform: "cardigan", badge: "petal" },
+    reina: { hairstyle: "short", uniform: "blazer", badge: "mask" },
+    kaede: { hairstyle: "long", uniform: "standard", badge: null },
+  };
+
+// Monsters/anomalies — abstract shapes, not humanoid.
 const SHAPE_BY_CHARACTER: Record<string, TokenShape> = {
-  player: "circle",
-  akari: "diamond",
-  mika: "star",
-  sleepy_upperclassman: "soft-square",
-  yuna: "leaf",
   stray_thought: "cloud",
   runaway_metaphor: "inkblot",
-  sora: "gear",
-  nana: "petal",
   stray_equation: "shard",
   glitch_sprite: "glitch",
-  reina: "mask",
   flicker: "star",
   reflection: "diamond",
-  kaede: "leaf",
   the_accumulation: "ring",
 };
 
 const SIZE = 40;
 const R = SIZE / 2;
+const HEAD_CX = R;
+const HEAD_CY = R - 9;
+const HEAD_R = 8;
+
+function drawHairstyle(g: Phaser.GameObjects.Graphics, style: Hairstyle, accent: number) {
+  g.fillStyle(accent, 1);
+  switch (style) {
+    case "short":
+      // a simple cap over the top half of the head
+      g.beginPath();
+      g.arc(HEAD_CX, HEAD_CY, HEAD_R + 1.5, Math.PI, 0, false);
+      g.closePath();
+      g.fillPath();
+      break;
+    case "long":
+      // cap on top, plus two shapes flowing down past the shoulders
+      g.beginPath();
+      g.arc(HEAD_CX, HEAD_CY, HEAD_R + 1.5, Math.PI, 0, false);
+      g.closePath();
+      g.fillPath();
+      g.fillRoundedRect(HEAD_CX - HEAD_R - 3, HEAD_CY - 2, 5, 20, 2.5);
+      g.fillRoundedRect(HEAD_CX + HEAD_R - 2, HEAD_CY - 2, 5, 20, 2.5);
+      break;
+    case "twin-tails":
+      g.beginPath();
+      g.arc(HEAD_CX, HEAD_CY, HEAD_R + 1, Math.PI, 0, false);
+      g.closePath();
+      g.fillPath();
+      g.fillEllipse(HEAD_CX - HEAD_R - 2, HEAD_CY + 4, 6, 10);
+      g.fillEllipse(HEAD_CX + HEAD_R + 2, HEAD_CY + 4, 6, 10);
+      break;
+    case "undercut":
+      // asymmetric angular wedge — sharp on one side, close-cropped
+      g.beginPath();
+      g.moveTo(HEAD_CX - HEAD_R, HEAD_CY - 1);
+      g.lineTo(HEAD_CX - 2, HEAD_CY - HEAD_R - 3);
+      g.lineTo(HEAD_CX + HEAD_R + 1, HEAD_CY - 3);
+      g.lineTo(HEAD_CX + HEAD_R - 2, HEAD_CY + 2);
+      g.lineTo(HEAD_CX - HEAD_R + 1, HEAD_CY + 3);
+      g.closePath();
+      g.fillPath();
+      break;
+  }
+}
+
+function drawUniformTrim(g: Phaser.GameObjects.Graphics, uniform: UniformVariant, accent: number, torsoTop: number, torsoBottom: number, torsoW: number) {
+  g.lineStyle(2, accent, 0.85);
+  switch (uniform) {
+    case "cardigan":
+      // open V down the front
+      g.beginPath();
+      g.moveTo(R - 3, torsoTop + 2);
+      g.lineTo(R, torsoTop + 7);
+      g.lineTo(R + 3, torsoTop + 2);
+      g.strokePath();
+      g.lineTo(R, torsoBottom - 2);
+      break;
+    case "blazer":
+      // sharp shoulder line
+      g.beginPath();
+      g.moveTo(R - torsoW / 2, torsoTop + 3);
+      g.lineTo(R - 3, torsoTop);
+      g.lineTo(R + 3, torsoTop);
+      g.lineTo(R + torsoW / 2, torsoTop + 3);
+      g.strokePath();
+      break;
+    case "standard":
+      // small centered collar mark
+      g.strokeCircle(R, torsoTop + 3, 2);
+      break;
+  }
+}
+
+function drawHumanoid(
+  g: Phaser.GameObjects.Graphics,
+  body: number,
+  accent: number,
+  hairstyle: Hairstyle,
+  uniform: UniformVariant,
+  badge: TokenShape | null,
+) {
+  g.clear();
+  g.fillStyle(0x000000, 0.18);
+  g.fillEllipse(R, SIZE - 6, R * 1.1, 8);
+
+  const torsoW = 17;
+  const torsoTop = HEAD_CY + HEAD_R - 1;
+  const torsoBottom = SIZE - 8;
+
+  // torso
+  g.fillStyle(body, 1);
+  g.lineStyle(2.5, accent, 1);
+  g.fillRoundedRect(R - torsoW / 2, torsoTop, torsoW, torsoBottom - torsoTop, 6);
+  g.strokeRoundedRect(R - torsoW / 2, torsoTop, torsoW, torsoBottom - torsoTop, 6);
+  drawUniformTrim(g, uniform, accent, torsoTop, torsoBottom, torsoW);
+
+  // head (drawn after torso so it sits on top, before hair)
+  g.fillStyle(body, 1);
+  g.lineStyle(2.5, accent, 1);
+  g.fillCircle(HEAD_CX, HEAD_CY, HEAD_R);
+  g.strokeCircle(HEAD_CX, HEAD_CY, HEAD_R);
+
+  drawHairstyle(g, hairstyle, accent);
+
+  // face
+  g.fillStyle(accent, 1);
+  g.fillCircle(HEAD_CX - 3, HEAD_CY + 1, 1.6);
+  g.fillCircle(HEAD_CX + 3, HEAD_CY + 1, 1.6);
+
+  // badge — a small version of the character's old signature shape,
+  // kept as a recognizable accessory instead of being the whole body
+  if (badge) {
+    const bx = R + torsoW / 2 - 1;
+    const by = torsoBottom - 5;
+    g.fillStyle(accent, 1);
+    g.fillCircle(bx, by, 4);
+    g.fillStyle(body, 1);
+    g.fillCircle(bx, by, 2.2);
+  }
+}
 
 function drawShape(g: Phaser.GameObjects.Graphics, shape: TokenShape, body: number, accent: number) {
   g.clear();
@@ -93,6 +243,16 @@ function drawShape(g: Phaser.GameObjects.Graphics, shape: TokenShape, body: numb
       g.strokeCircle(R - 8, cy + 2, 10);
       g.strokeCircle(R + 8, cy + 2, 10);
       g.strokeCircle(R, cy - 6, 12);
+      // wispy trailing detail so it isn't just three flat circles
+      g.lineStyle(1.5, accent, 0.55);
+      g.beginPath();
+      g.moveTo(R - 14, cy + 8);
+      g.lineTo(R - 20, cy + 12);
+      g.strokePath();
+      g.beginPath();
+      g.moveTo(R + 14, cy + 6);
+      g.lineTo(R + 19, cy + 10);
+      g.strokePath();
       break;
     }
     case "soft-square": {
@@ -180,6 +340,12 @@ function drawShape(g: Phaser.GameObjects.Graphics, shape: TokenShape, body: numb
       g.closePath();
       g.fillPath();
       g.strokePath();
+      // interior facet lines so it reads as a broken crystal, not a blob
+      g.lineStyle(1, accent, 0.5);
+      g.beginPath();
+      g.moveTo(cx, cy - s * 0.6);
+      g.lineTo(cx, cy + s * 0.6);
+      g.strokePath();
       break;
     }
     case "glitch": {
@@ -198,6 +364,12 @@ function drawShape(g: Phaser.GameObjects.Graphics, shape: TokenShape, body: numb
       const cy = R - 2;
       g.fillEllipse(cx, cy, (R - 6) * 2, (R - 4) * 2);
       g.strokeEllipse(cx, cy, (R - 6) * 2, (R - 4) * 2);
+      // brow line detail so the mask reads as a face, not an oval
+      g.lineStyle(1.5, accent, 0.6);
+      g.beginPath();
+      g.moveTo(cx - 6, cy - 5);
+      g.lineTo(cx + 6, cy - 5);
+      g.strokePath();
       break;
     }
     case "ring": {
@@ -221,7 +393,33 @@ function drawShape(g: Phaser.GameObjects.Graphics, shape: TokenShape, body: numb
   g.fillCircle(R + 6, R - 4, 2.5);
 }
 
-export function ensureCharacterTexture(scene: Phaser.Scene, characterId: string): string {
+export interface PlayerAppearanceInput {
+  hairstyle: string;
+  uniformVariant: string;
+}
+
+export function ensureCharacterTexture(
+  scene: Phaser.Scene,
+  characterId: string,
+  appearance?: PlayerAppearanceInput,
+): string {
+  const human = HUMAN_CHARACTERS[characterId];
+  const isPlayer = characterId === "player";
+
+  if (human || isPlayer) {
+    const hairstyle = isPlayer && appearance ? normalizeHairstyle(appearance.hairstyle) : (human?.hairstyle ?? "short");
+    const uniform = isPlayer && appearance ? normalizeUniform(appearance.uniformVariant) : (human?.uniform ?? "standard");
+    const badge = human?.badge ?? null;
+    const key = isPlayer ? `token:player:${hairstyle}:${uniform}` : `token:${characterId}`;
+    if (scene.textures.exists(key)) return key;
+    const palette = FACE_PALETTES[characterId] ?? { body: 0x999999, accent: 0xffffff };
+    const g = scene.add.graphics();
+    drawHumanoid(g, palette.body, palette.accent, hairstyle, uniform, badge);
+    g.generateTexture(key, SIZE, SIZE);
+    g.destroy();
+    return key;
+  }
+
   const key = `token:${characterId}`;
   if (scene.textures.exists(key)) return key;
   const palette = FACE_PALETTES[characterId] ?? { body: 0x999999, accent: 0xffffff };

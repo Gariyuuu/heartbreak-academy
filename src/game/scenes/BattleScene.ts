@@ -12,7 +12,20 @@ import type { BulletPattern } from "../bullets/Pattern";
 import { PALETTE } from "../engine/palette";
 import { useSettingsStore } from "../state/settingsStore";
 
-const ARENA: Arena = { x: 248, y: 176, w: 400, h: 190 };
+// The canvas now dynamically matches the browser window (Scale.RESIZE, see
+// PhaserGame.ts) instead of a fixed 896x576, so the arena has to be
+// computed off the actual current size rather than hardcoded — centered,
+// sized proportionally to whatever screen it's running on.
+function computeArena(canvasWidth: number, canvasHeight: number): Arena {
+  const w = Math.min(canvasWidth * 0.6, 720);
+  const h = Math.min(canvasHeight * 0.4, 340);
+  return {
+    x: (canvasWidth - w) / 2,
+    y: canvasHeight * 0.28,
+    w,
+    h,
+  };
+}
 
 // Most enemy ids match a PlaceholderSprites character id directly; bosses
 // that share a character's face (e.g. Mika's arcade duel) need a mapping.
@@ -35,6 +48,8 @@ export class BattleScene extends Phaser.Scene {
   private pattern: BulletPattern | null = null;
   private dodgeElapsed = 0;
   private enemyToken!: Phaser.GameObjects.Image;
+  private arena!: Arena;
+  private enemyTokenBaseY = 0;
   private unsubTurnPhase?: () => void;
   private unsubResult?: () => void;
   private resolvedExit = false;
@@ -61,15 +76,19 @@ export class BattleScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor(PALETTE.battleArena);
     this.cameras.main.fadeIn(200, 0, 0, 0);
 
+    this.arena = computeArena(this.scale.width, this.scale.height);
+    const centerX = this.scale.width / 2;
+
     const arenaGfx = this.add.graphics();
     arenaGfx.lineStyle(3, PALETTE.battleArenaBorder, 1);
-    arenaGfx.strokeRect(ARENA.x, ARENA.y, ARENA.w, ARENA.h);
+    arenaGfx.strokeRect(this.arena.x, this.arena.y, this.arena.w, this.arena.h);
     arenaGfx.setDepth(20);
 
     const tokenKey = ensureCharacterTexture(this, ENEMY_TOKEN_CHARACTER[enemyId] ?? enemyId);
-    this.enemyToken = this.add.image(448, 100, tokenKey).setDepth(15).setScale(1.6);
+    this.enemyTokenBaseY = this.arena.y * 0.45;
+    this.enemyToken = this.add.image(centerX, this.enemyTokenBaseY, tokenKey).setDepth(15).setScale(1.6);
     this.add
-      .text(448, 40, enemy.name, {
+      .text(centerX, this.enemyTokenBaseY - 60, enemy.name, {
         fontFamily: "Avenir Next, sans-serif",
         fontSize: "20px",
         color: "#fff6ea",
@@ -77,8 +96,8 @@ export class BattleScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(15);
 
-    this.heart = new HeartController(this, ARENA.x + ARENA.w / 2, ARENA.y + ARENA.h - 24);
-    this.bulletField = new BulletField(this, ARENA);
+    this.heart = new HeartController(this, this.arena.x + this.arena.w / 2, this.arena.y + this.arena.h - 24);
+    this.bulletField = new BulletField(this, this.arena);
     this.input$ = new InputManager(this);
 
     this.unsubTurnPhase = useBattleStore.subscribe((state, prev) => {
@@ -165,11 +184,11 @@ export class BattleScene extends Phaser.Scene {
       const enemy = getEnemy(battle.enemyId);
       const phaseDef = enemy.phases[battle.phaseIndex] ?? enemy.phases[0];
 
-      this.heart.update(delta, input.moveX, input.moveY, ARENA);
+      this.heart.update(delta, input.moveX, input.moveY, this.arena);
       this.pattern.tick({
         elapsedMs: this.dodgeElapsed,
         deltaMs: delta,
-        arena: ARENA,
+        arena: this.arena,
         field: this.bulletField,
         heart: { x: this.heart.x, y: this.heart.y },
       });
@@ -196,6 +215,6 @@ export class BattleScene extends Phaser.Scene {
     }
 
     // gentle idle bob for the enemy token so it reads as alive
-    this.enemyToken.y = 100 + Math.sin(this.time.now / 500) * 4;
+    this.enemyToken.y = this.enemyTokenBaseY + Math.sin(this.time.now / 500) * 4;
   }
 }

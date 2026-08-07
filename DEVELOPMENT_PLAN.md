@@ -42,9 +42,17 @@ blank boxes:
   system (swap eyes/mouth paths per emotion). This is a legitimate
   placeholder pipeline, not a cop-out — it's swappable 1:1 for real art
   later (`ui/dialogue/Portrait.tsx` takes a `characterId` + `expression`).
-- **Overworld sprites** are Phaser-drawn geometry (palette-distinct
-  silhouettes) via a small sprite-generation module
-  (`game/engine/PlaceholderSprites.ts`), not photographs of nothing.
+- **Overworld sprites** are Phaser-drawn geometry via
+  `game/engine/PlaceholderSprites.ts`. As of the presentation pass
+  (Phase 28) every human character — player included — is a real
+  head+torso humanoid with a hairstyle and uniform-trim variant, not a
+  single flat primitive; the player's hairstyle/uniform choices from
+  character creation actually render now, which they never did before.
+  Monsters/anomalies still use the abstract `TokenShape` system (correct
+  for what they thematically are), just with more detail per shape than
+  before. Map tiles (`game/engine/TileRenderer.ts`) got the same
+  treatment: real floor grain instead of a flat 2-tone checkerboard,
+  paneled walls, beveled decor, a real two-leaf door.
 - **Audio** is fully real, procedurally: `game/audio/AudioManager.ts`
   plays WebAudio SFX (damage, heal, save, spare, etc.) and
   `game/audio/MusicManager.ts` runs a small WebAudio step-sequencer for 4
@@ -270,7 +278,20 @@ playable state, not a broken intermediate one.
       a driving square-wave bass pulse under its existing sawtooth melody.
       Verified both waveforms fire together and the other 3 tracks are
       unaffected. See CHANGELOG 0.21.0.
-- [ ] **Phase 28+** — A broader accessibility pass beyond what's fixed so
+- [x] **Phase 28** — Presentation pass, direct from user feedback: dialogue
+      reveal speed cut ~2.5-3x (it was tuned for much shorter lines than
+      this game actually has); switched the canvas from a fixed 896x576
+      (`Scale.FIT`) to `Scale.RESIZE` matching the real window, with
+      `BattleScene`'s arena and `OverworldScene`'s camera zoom both made
+      dynamic so nothing letterboxes or leaves dead space; real
+      head+torso humanoid sprites for the player and every named NPC,
+      with hairstyle/uniform choices from character creation actually
+      rendering for the first time; real map tile texture (grain, panel
+      seams, beveled decor, an actual two-leaf door) replacing the flat
+      2-tone checkerboard. See CHANGELOG 0.22.0 for the full breakdown,
+      including a real `fillGradientStyle` rendering bug caught by
+      actually looking at a screenshot rather than trusting build/lint.
+- [ ] **Phase 29+** — A broader accessibility pass beyond what's fixed so
       far (keyboard remapping — keys are fixed, not rebindable —
       screen-reader semantics for the DOM UI layer, contrast auditing) —
       not started (see "What's Next" below)
@@ -288,8 +309,9 @@ a save/autosave system, inventory/equipment with real stat effects, a
 phone with route-reactive messages, an endings system (10 endings, with a
 gallery tab in Extras), real procedural music (4 tracks, with a preview
 tab in Extras), a mid-battle pause with a real accessibility fix behind
-it, New Game+, and a route/consequence tracker that quietly feeds
-dialogue throughout. Verified end-to-end with Playwright plus a
+it, New Game+, a genuinely fullscreen presentation with real humanoid
+sprites and textured maps, and a route/consequence tracker that quietly
+feeds dialogue throughout. Verified end-to-end with Playwright plus a
 from-scratch map-connectivity validator, not just typechecked.
 
 ## What's Next (honest scope note)

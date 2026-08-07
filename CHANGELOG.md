@@ -7,9 +7,13 @@ semantic versioning for a pre-1.0 project.
 ## [Unreleased]
 
 ### Known debt
-- All visual assets are placeholder (DOM/SVG portraits, geometric Phaser
-  sprites). Audio is fully real but procedurally synthesized end to end
-  (SFX and 4 music tracks, 0.19.0) — no recorded instruments or mixed
+- All visual assets are still placeholder (DOM/SVG portraits, Phaser-drawn
+  sprites and tiles, no image-generation tool available), but a real
+  presentation pass (0.22.0) took them well past "geometric primitive":
+  humanoid player/NPC sprites with hairstyle/uniform customization that
+  actually renders, and map tiles with real texture instead of a flat
+  checkerboard. Audio is fully real but procedurally synthesized end to
+  end (SFX and 4 music tracks, 0.19.0) — no recorded instruments or mixed
   tracks exist.
 - Accessibility settings are now all genuinely wired (`flashEffects` was
   the last dead one, fixed in 0.20.0, which also added the ability to
@@ -40,6 +44,85 @@ semantic versioning for a pre-1.0 project.
   functional with real content (~35 achievements, 10 endings, 4 tracks).
 - Bundle is a single ~1.54MB chunk (Phaser is the bulk of it); code-splitting
   would help but wasn't a priority for this pass.
+
+## [0.22.0] — Presentation Pass: Speed, Fullscreen, Real Sprites, Real Maps
+Direct user feedback: "dialogue too slow, the character has no
+customization, NPCs and monsters need to be more than circles, maps are
+all the same grid block style, and the map is too zoomed out." Five fixes.
+
+**Dialogue speed.** `TEXT_SPEED_MS` was tuned for a game with much shorter
+lines than this one actually has — 16ms/char on "normal" meant multi-
+second reveals on the prose-heavy lines this game is full of. Cut
+roughly 2.5-3x across the board (slow 34→18, normal 16→6, fast 7→2,
+instant unchanged).
+
+**Fullscreen.** The canvas was a fixed 896x576 scaled to fit the window
+(`Phaser.Scale.FIT`) — letterboxed on anything off its 14:9 aspect ratio,
+and since a fixed-resolution canvas shows a fixed number of tiles
+regardless of the actual window size, it read as small/zoomed out on
+anything bigger than a laptop screen. Switched to `Phaser.Scale.RESIZE`,
+sized to `window.innerWidth/innerHeight` — the canvas now genuinely
+matches the browser window. This broke two things that assumed the old
+fixed resolution, both fixed:
+- `BattleScene`'s arena was a hardcoded `{x:248,y:176,w:400,h:190}`; now
+  `computeArena()` centers and sizes it off the actual current canvas
+  dimensions at battle start.
+- `OverworldScene`'s camera used a flat `setZoom(1.4)`, which left visible
+  black dead space around any map smaller than the now-bigger viewport
+  (the camera can't pan past map bounds). Replaced with a per-map "cover"
+  zoom — `Math.max(canvasWidth/mapWidth, canvasHeight/mapHeight)`,
+  clamped to `[1.4, 2.6]` — so every map fills the screen regardless of
+  its own size or the window's.
+
+**Real player/NPC sprites, real customization.** Every human character —
+player included — was a single flat Phaser-drawn primitive (the player
+was literally a plain circle; Mika's whole body was a star). Worse: the
+character creation screen's Hairstyle and Uniform pickers had never
+affected anything — only Colorway (a runtime tint) was ever visually
+applied. New `drawHumanoid()` in `PlaceholderSprites.ts`: a real
+head+torso silhouette, a `Hairstyle` (`short`/`long`/`twin-tails`/
+`undercut`) drawn on the head, a `UniformVariant`
+(`standard`/`cardigan`/`blazer`) drawn as torso trim, and — for named
+NPCs — their old signature shape kept as a small shoulder badge instead
+of being the entire body (Mika keeps her star, Akari her diamond, etc.,
+now as an accessory on a person instead of the whole person). The player
+specifically reads `save.player.appearance.hairstyle`/`uniformVariant`
+(normalized from the creation screen's display labels) into the texture
+cache key, so picking "Twin-tails" + "Casual Cardigan" now actually shows
+twin-tails and a cardigan — verified by screenshot with a non-default
+selection. Monsters/anomalies (Stray Thought, Glitch Sprite, Reflection,
+etc.) intentionally keep their abstract `TokenShape` shapes — that's
+correct for what they are — but each got a small added detail pass
+(cloud wisps, shard facets, a mask brow line) so "abstract" doesn't mean
+"flat." Needed one new shape, `"ring"`'s neighbors having claimed all 12
+existing `TokenShape` variants; also noticed and fixed Flicker/Reflection/
+Kaede rendering as generic circles (palette colors existed, `SHAPE_BY_
+CHARACTER` entries didn't) while in the file.
+
+**Real map textures.** `TileRenderer.ts` drew every floor tile as one of
+two flat colors in a strict alternating checkerboard — the exact "grid
+block style" being reported. Rewrote the default (floor) case: mostly one
+base color with only a sparse, hash-scattered ~20% getting the accent
+shade (not alternating), plus 1-2 deterministic per-tile flecks for
+grain and a faint grout-seam stroke — reads as laid flooring, not a
+boardgame board. Walls gained a top highlight, a vertical panel seam, and
+kept the bottom shadow strip. Decor tiles (`L`/`A`) gained a diagonal
+bevel (lighter corner / darker corner). Doors became an actual two-leaf
+door with handles and a frame instead of a flat colored square. One real
+bug caught mid-implementation: the first decor-bevel attempt used
+`fillGradientStyle()`, which silently produced an empty/unfilled shape
+when combined with `fillRect()` — caught immediately by looking at the
+actual screenshot (lockers rendered as hollow outlines), not by
+build/lint, which both stayed green through it. Replaced with a manual
+two-triangle bevel using plain `fillStyle`, which is guaranteed to
+render.
+
+Verified with real screenshots at 1600x900 and 1440x850 (not just
+Playwright's functional checks) across three different region themes
+(academy, lab, mirror hall) to confirm the fixes generalize, plus a full
+functional regression pass — movement, dialogue, map transitions,
+keyboard-driven battle, mid-battle pause — all still clean after this
+much rendering-layer churn.
 
 ## [0.21.0] — Keyboard-Only Battle Menus, Layered Boss Music
 Two more passes, one accessibility and one music.

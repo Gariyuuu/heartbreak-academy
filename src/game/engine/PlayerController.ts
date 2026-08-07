@@ -34,8 +34,9 @@ export class PlayerController {
     y: number,
     facing: Facing,
     colorway = "crimson",
+    appearance?: { hairstyle: string; uniformVariant: string },
   ) {
-    const bodyKey = ensureCharacterTexture(scene, "player");
+    const bodyKey = ensureCharacterTexture(scene, "player", appearance);
     const arrowKey = ensureFacingArrowTexture(scene);
     this.body = scene.add.image(0, -6, bodyKey);
     this.body.setTint(COLORWAY_HEX[colorway] ?? COLORWAY_HEX.crimson);

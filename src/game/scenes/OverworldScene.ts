@@ -67,12 +67,26 @@ export class OverworldScene extends Phaser.Scene {
       store.save.player.y,
       store.save.player.facing,
       store.save.player.appearance.colorway,
+      {
+        hairstyle: store.save.player.appearance.hairstyle,
+        uniformVariant: store.save.player.appearance.uniformVariant,
+      },
     );
 
     const { width, height } = mapPixelSize(map);
     this.cameras.main.setBounds(0, 0, width, height);
     this.cameras.main.startFollow(this.player.container, true, 0.12, 0.12);
-    this.cameras.main.setZoom(1.4);
+
+    // A fixed 1.4 zoom worked when the canvas was a fixed 896x576, but now
+    // that it matches the real browser window (Scale.RESIZE — see
+    // PhaserGame.ts), a map smaller than the zoomed viewport can't pan far
+    // enough to fill it (the camera is bounded to the map's own pixel
+    // size), leaving visible dead space around the edges. Pick whichever
+    // zoom makes the map cover the full viewport (like CSS
+    // `background-size: cover`), clamped so large regions don't feel
+    // uncomfortably close and tiny rooms don't feel absurdly magnified.
+    const coverZoom = Math.max(this.scale.width / width, this.scale.height / height);
+    this.cameras.main.setZoom(Phaser.Math.Clamp(coverZoom, 1.4, 2.6));
     this.cameras.main.fadeIn(220, 20, 14, 28);
 
     this.input$ = new InputManager(this);

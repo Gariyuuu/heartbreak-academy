@@ -52,7 +52,7 @@ export function TitleScreen() {
           </button>
         </div>
       </div>
-      <div className="title-footer">HEART//BREAK ACADEMY — v0.21.0</div>
+      <div className="title-footer">HEART//BREAK ACADEMY — v0.22.0</div>
     </div>
   );
 }

@@ -47,8 +47,8 @@ export const useSettingsStore = create<SettingsState>()(
 );
 
 export const TEXT_SPEED_MS: Record<TextSpeed, number> = {
-  slow: 34,
-  normal: 16,
-  fast: 7,
+  slow: 18,
+  normal: 6,
+  fast: 2,
   instant: 0,
 };

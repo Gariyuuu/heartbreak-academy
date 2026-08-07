@@ -10,20 +10,23 @@ This is an original IP — no characters, dialogue, sprites, maps, or music
 are copied from any existing game.
 
 Current state: all **15 regions** from the design doc are built and
-connected by real, walkable doors, the run now actually **ends** — 6
+connected by real, walkable doors, the run now actually **ends** — 10
 data-defined endings, picked up from a real in-world trigger — and
 **New Game+** loops back from there — including its own ending, and its
 own boss: a meta-timeline confrontation whose dialogue reads real numbers
-out of your save history. Bosses now sit at 10 of the spec's 8-12; endings
-meet the 10+ target; the game now has real (procedurally synthesized)
-background music, with a layered bass under the boss track; battle menus
-are fully keyboard-navigable; and an accessibility audit found and fixed
-two more real gaps (a dead flash-effects setting, and no way to pause
-mid-battle). A broader accessibility pass (keyboard remapping,
-screen-reader semantics, contrast auditing) is the one item from the
-design doc's scope with no dedicated work yet (see `DEVELOPMENT_PLAN.md`
-for full scope and what's still ahead, and `CHANGELOG.md` for what's
-shipped so far, most recently `[0.21.0]`).
+out of your save history. Bosses sit at 10 of the spec's 8-12; endings
+meet the 10+ target; real (procedurally synthesized) background music
+with a layered bass under the boss track; battle menus are fully
+keyboard-navigable; two real accessibility fixes (a dead flash-effects
+setting, and no way to pause mid-battle); and a full presentation pass —
+genuinely fullscreen (no letterboxing or dead space on any map/window
+size), real head+torso humanoid sprites with hairstyle/uniform
+customization that actually renders, textured map tiles instead of a flat
+checkerboard, and faster dialogue. A broader accessibility pass (keyboard
+remapping, screen-reader semantics, contrast auditing) is the one item
+from the design doc's scope with no dedicated work yet (see
+`DEVELOPMENT_PLAN.md` for full scope and what's still ahead, and
+`CHANGELOG.md` for what's shipped so far, most recently `[0.22.0]`).
 
 ## Features
 
@@ -83,8 +86,9 @@ shipped so far, most recently `[0.21.0]`).
   and a Music tab (preview any of the 4 background tracks) — each unmet
   enemy/unearned achievement/unreached ending shows as "???" until you
   actually get there
-- Character creation (name, pronouns, hairstyle, uniform, colorway — the
-  colorway visibly tints your overworld sprite)
+- Character creation (name, pronouns, hairstyle, uniform, colorway) that
+  actually renders — a real head+torso sprite with your chosen hairstyle
+  and uniform trim, not just a colorway tint on a plain circle
 - Real background music (4 tracks — title, overworld, battle, boss — a
   WebAudio step-sequencer, not silence) and settings with real effects:
   volume sliders drive both music and procedural WebAudio SFX, plus text
@@ -220,9 +224,14 @@ than ship blank boxes:
 - **Portraits** are SVG + CSS, built in the DOM (`ui/dialogue/Portrait.tsx`)
   — distinct palette and expression system per character, swappable 1:1
   for real art later.
-- **Overworld/battle sprites** are Phaser-drawn geometry with
-  character-distinct silhouettes and palettes (`game/engine/
-  PlaceholderSprites.ts`).
+- **Overworld/battle sprites** are Phaser-drawn geometry
+  (`game/engine/PlaceholderSprites.ts`). The player and every named human
+  NPC are a real head+torso humanoid with a hairstyle and uniform-trim
+  variant, not a single flat shape; monsters/anomalies use a distinct
+  abstract shape per character, which is correct for what they
+  thematically are. **Map tiles** (`game/engine/TileRenderer.ts`) have
+  real texture — grain, panel seams, beveled decor, an actual two-leaf
+  door — instead of a flat 2-tone checkerboard.
 - **Audio** is fully wired and genuinely real, not just architected: SFX
   are procedural WebAudio tones per event trigger, and background music is
   a small WebAudio step-sequencer (`game/audio/MusicManager.ts`, 4 tracks)
