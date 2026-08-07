@@ -1,0 +1,79 @@
+.puzzle-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 7, 15, 0.55);
+  z-index: 50;
+}
+
+.puzzle-panel {
+  width: 320px;
+  padding: 22px;
+  text-align: center;
+}
+
+.puzzle-panel h3 {
+  margin: 0 0 8px;
+  color: var(--hba-border);
+}
+
+.puzzle-flavor {
+  color: var(--hba-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+}
+
+.puzzle-display {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 14px;
+  font-size: 1.6rem;
+  letter-spacing: 0.1em;
+}
+
+.puzzle-digit {
+  width: 36px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--hba-border-soft);
+  border-radius: var(--hba-radius-sm);
+}
+
+.puzzle-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.puzzle-close {
+  width: 100%;
+}
+
+.shake {
+  animation: shake 0.38s ease;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  40% {
+    transform: translateX(8px);
+  }
+  60% {
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(6px);
+  }
+}

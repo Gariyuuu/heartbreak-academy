@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #14101c;
+  overflow: hidden;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+}

@@ -1,0 +1,49 @@
+.cutscene-screen {
+  position: absolute;
+  inset: 0;
+  background: #0c0910;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 40px;
+}
+
+.cutscene-line {
+  max-width: 640px;
+  text-align: center;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: var(--hba-text);
+  animation: cutscene-fade 0.5s ease;
+}
+
+@keyframes cutscene-fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cutscene-continue {
+  position: absolute;
+  bottom: 30px;
+  color: var(--hba-text-muted);
+  font-size: 0.8rem;
+  animation: bob 1.2s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}

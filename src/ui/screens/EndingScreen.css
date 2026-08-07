@@ -1,0 +1,83 @@
+.ending-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 4, 10, 0.9);
+  z-index: 70;
+  animation: ending-fade 1s ease;
+}
+
+@keyframes ending-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ending-panel {
+  width: min(560px, 90%);
+  max-height: 85vh;
+  overflow-y: auto;
+  text-align: center;
+  padding: 36px;
+}
+
+.ending-eyebrow {
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--hba-text-muted);
+  margin: 0 0 6px;
+}
+
+.ending-panel h1 {
+  margin: 0 0 22px;
+  letter-spacing: 0.06em;
+  font-size: 1.6rem;
+}
+
+.ending-mood-warm .ending-panel h1 {
+  color: var(--hba-green);
+}
+
+.ending-mood-neutral .ending-panel h1 {
+  color: var(--hba-border);
+}
+
+.ending-mood-cold .ending-panel h1 {
+  color: var(--hba-danger);
+}
+
+.ending-mood-strange .ending-panel h1 {
+  color: var(--hba-pink);
+}
+
+.ending-paragraph {
+  color: var(--hba-text-muted);
+  line-height: 1.7;
+  text-align: left;
+  margin: 0 0 14px;
+}
+
+.ending-stats {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  color: var(--hba-text-muted);
+  font-size: 0.85rem;
+  margin: 10px 0 26px;
+  letter-spacing: 0.02em;
+}
+
+.ending-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.ending-panel .hba-btn {
+  padding: 10px 22px;
+}

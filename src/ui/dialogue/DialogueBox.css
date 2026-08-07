@@ -1,0 +1,121 @@
+.dialogue-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 24px 24px;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.dialogue-box {
+  pointer-events: auto;
+  width: min(900px, 100%);
+  min-height: 150px;
+  background: var(--hba-panel);
+  border: 3px solid var(--hba-border);
+  border-radius: var(--hba-radius);
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.55);
+  display: flex;
+  gap: 16px;
+  padding: 18px 22px;
+  animation: dialogue-in 0.16s ease-out;
+}
+
+@keyframes dialogue-in {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.dialogue-portrait {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-start;
+}
+
+.dialogue-content {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.dialogue-name {
+  font-weight: 700;
+  color: var(--hba-border);
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.dialogue-text {
+  font-size: 1.08rem;
+  line-height: 1.5;
+  color: var(--hba-text);
+  white-space: pre-wrap;
+  min-height: 3.3em;
+}
+
+.dialogue-caret {
+  animation: blink 0.9s steps(1) infinite;
+  color: var(--hba-border);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.dialogue-continue {
+  text-align: right;
+  color: var(--hba-border);
+  cursor: pointer;
+  animation: bob 1s ease-in-out infinite;
+  margin-top: 4px;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+.dialogue-choices {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dialogue-choices li {
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: var(--hba-radius-sm);
+  color: var(--hba-text-muted);
+  display: flex;
+  gap: 8px;
+}
+
+.dialogue-choices li.selected {
+  background: rgba(255, 224, 102, 0.12);
+  color: var(--hba-text);
+}
+
+.choice-marker {
+  color: var(--hba-border);
+  width: 1em;
+}

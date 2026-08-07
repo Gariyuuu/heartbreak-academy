@@ -1,0 +1,74 @@
+:root {
+  --hba-bg: #14101c;
+  --hba-bg-soft: #1e1729;
+  --hba-panel: rgba(20, 14, 28, 0.94);
+  --hba-panel-solid: #1b1424;
+  --hba-border: #ffe066;
+  --hba-border-soft: rgba(255, 224, 102, 0.35);
+  --hba-text: #fff6ea;
+  --hba-text-muted: #c9bcd8;
+  --hba-pink: #ff6ea6;
+  --hba-blue: #5b6ee1;
+  --hba-orange: #ff8f4d;
+  --hba-green: #6fae8f;
+  --hba-danger: #ff5d6c;
+  --hba-font: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --hba-radius: 14px;
+  --hba-radius-sm: 8px;
+}
+
+.hba-root {
+  font-family: var(--hba-font);
+  color: var(--hba-text);
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: var(--hba-bg);
+}
+
+.hba-panel {
+  background: var(--hba-panel);
+  border: 2px solid var(--hba-border-soft);
+  border-radius: var(--hba-radius);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.hba-btn {
+  font-family: inherit;
+  background: var(--hba-bg-soft);
+  color: var(--hba-text);
+  border: 2px solid var(--hba-border-soft);
+  border-radius: var(--hba-radius-sm);
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: transform 0.1s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.hba-btn:hover,
+.hba-btn.selected {
+  border-color: var(--hba-border);
+  background: #2a2038;
+  transform: translateX(2px);
+}
+
+.hba-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.hba-scanlines {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.02) 0px,
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+}

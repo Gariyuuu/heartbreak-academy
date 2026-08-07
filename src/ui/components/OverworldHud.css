@@ -1,0 +1,58 @@
+.overworld-hud {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 30;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.overworld-hud.dim {
+  opacity: 0.35;
+}
+
+.overworld-hud-block {
+  background: var(--hba-panel);
+  border: 2px solid var(--hba-border-soft);
+  border-radius: var(--hba-radius-sm);
+  padding: 8px 14px;
+  min-width: 160px;
+}
+
+.overworld-hud-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.overworld-hud-hpbar {
+  height: 8px;
+  background: #2a2038;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.overworld-hud-hpfill {
+  height: 100%;
+  background: linear-gradient(90deg, #6fae8f, #a8e0c4);
+  transition: width 0.25s ease;
+}
+
+.overworld-hud-hp {
+  font-size: 0.7rem;
+  color: var(--hba-text-muted);
+  margin-top: 3px;
+}
+
+.overworld-hud-area {
+  background: var(--hba-panel);
+  border: 2px solid var(--hba-border-soft);
+  border-radius: var(--hba-radius-sm);
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  color: var(--hba-text-muted);
+}

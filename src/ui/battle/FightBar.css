@@ -1,0 +1,42 @@
+.fight-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.fight-bar-hint {
+  color: var(--hba-text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.fight-bar-track {
+  position: relative;
+  height: 22px;
+  background: #241b30;
+  border: 2px solid var(--hba-border-soft);
+  border-radius: 11px;
+  overflow: hidden;
+}
+
+.fight-bar-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(255, 224, 102, 0.35);
+}
+
+.fight-bar-marker {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 4px;
+  background: var(--hba-pink);
+  box-shadow: 0 0 8px var(--hba-pink);
+}
+
+.fight-bar-swing {
+  padding: 6px 22px;
+}

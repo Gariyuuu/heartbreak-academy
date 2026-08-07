@@ -1,0 +1,96 @@
+.title-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.title-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, #392a52 0%, #14101c 55%),
+    radial-gradient(circle at 80% 80%, #33223f 0%, transparent 55%);
+  background-size: 200% 200%;
+  animation: title-drift 18s ease-in-out infinite;
+}
+
+@keyframes title-drift {
+  0%,
+  100% {
+    background-position: 0% 0%, 100% 100%;
+  }
+  50% {
+    background-position: 20% 30%, 70% 60%;
+  }
+}
+
+.title-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.title-logo {
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  letter-spacing: 0.03em;
+  margin: 0;
+  line-height: 1.1;
+  text-shadow: 0 0 30px rgba(255, 224, 102, 0.25);
+}
+
+.title-slash {
+  color: var(--hba-pink);
+}
+
+.title-subtitle {
+  color: var(--hba-text-muted);
+  font-style: italic;
+  margin: 10px 0 34px;
+  animation: subtitle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes subtitle-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.title-ngplus {
+  color: var(--hba-pink);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: -24px 0 34px;
+  opacity: 0.75;
+}
+
+.title-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 240px;
+  margin: 0 auto;
+}
+
+.title-btn {
+  padding: 12px;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.title-footer {
+  position: absolute;
+  bottom: 14px;
+  right: 18px;
+  font-size: 0.72rem;
+  color: var(--hba-text-muted);
+  opacity: 0.6;
+  z-index: 2;
+}

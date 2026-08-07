@@ -1,0 +1,39 @@
+.debug-panel {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 220px;
+  background: rgba(10, 8, 14, 0.95);
+  border: 2px dashed #ff5d6c;
+  border-radius: 8px;
+  padding: 10px;
+  z-index: 90;
+  font-size: 0.72rem;
+}
+
+.debug-panel-title {
+  color: #ff8f8f;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.debug-panel-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.debug-panel-grid button {
+  background: #241b30;
+  color: #fff6ea;
+  border: 1px solid rgba(255, 224, 102, 0.3);
+  border-radius: 4px;
+  padding: 5px 8px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.72rem;
+}
+
+.debug-panel-grid button:hover {
+  border-color: #ffe066;
+}

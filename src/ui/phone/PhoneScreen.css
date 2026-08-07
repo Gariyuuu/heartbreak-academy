@@ -1,0 +1,153 @@
+.phone-shell {
+  width: 320px;
+  height: 560px;
+  max-height: 90vh;
+  background: #17111f;
+  border: 4px solid #2b2038;
+  border-radius: 32px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  padding: 14px 12px;
+  position: relative;
+}
+
+.phone-notch {
+  width: 70px;
+  height: 6px;
+  background: #2b2038;
+  border-radius: 4px;
+  margin: 0 auto 10px;
+}
+
+.phone-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.phone-tabs button {
+  flex: 1;
+  background: #241b30;
+  color: var(--hba-text-muted);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 4px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.phone-tabs button.active {
+  background: var(--hba-border);
+  color: #17111f;
+  font-weight: 700;
+}
+
+.phone-body {
+  flex: 1;
+  overflow-y: auto;
+  background: #100b18;
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.phone-empty {
+  color: var(--hba-text-muted);
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.85rem;
+}
+
+.phone-contact-list,
+.phone-quest-list,
+.phone-profile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.phone-contact-list li {
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  background: #1c1526;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-contact-list li span {
+  font-size: 0.75rem;
+  color: var(--hba-text-muted);
+}
+
+.phone-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.phone-back {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: var(--hba-border);
+  cursor: pointer;
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.phone-bubble {
+  background: #241b30;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+}
+
+.phone-bubble-from {
+  font-size: 0.7rem;
+  color: var(--hba-border);
+  margin-bottom: 2px;
+}
+
+.phone-quest-list li {
+  background: #1c1526;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.phone-quest-list li.complete strong {
+  color: var(--hba-green);
+}
+
+.phone-quest-list li p {
+  font-size: 0.8rem;
+  color: var(--hba-text-muted);
+  margin: 4px 0 0;
+}
+
+.phone-profile-list li {
+  background: #1c1526;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.phone-profile-title {
+  font-size: 0.75rem;
+  color: var(--hba-text-muted);
+  margin-bottom: 4px;
+}
+
+.phone-profile-list li p {
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.phone-close {
+  margin-top: 10px;
+  width: 100%;
+}

@@ -1,0 +1,31 @@
+.poetry-panel {
+  width: 380px;
+  padding: 22px;
+  text-align: center;
+}
+
+.poetry-panel h3 {
+  margin: 0 0 12px;
+  color: var(--hba-border);
+}
+
+.poetry-verse {
+  color: var(--hba-text);
+  font-style: italic;
+  line-height: 1.7;
+  margin-bottom: 18px;
+  font-size: 0.98rem;
+}
+
+.poetry-blank {
+  color: var(--hba-pink);
+  font-style: normal;
+  letter-spacing: 0.1em;
+}
+
+.poetry-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}

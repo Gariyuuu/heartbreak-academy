@@ -1,0 +1,29 @@
+.toast-wrap {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 55;
+  pointer-events: none;
+}
+
+.toast-bubble {
+  background: var(--hba-panel-solid);
+  border: 2px solid var(--hba-border);
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  animation: toast-in 0.2s ease;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes toast-in {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
