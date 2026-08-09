@@ -16,8 +16,8 @@ export type TokenShape =
   | "mask"
   | "ring";
 
-export type Hairstyle = "short" | "long" | "twin-tails" | "undercut";
-export type UniformVariant = "standard" | "cardigan" | "blazer";
+export type Hairstyle = "short" | "long" | "twin-tails" | "undercut" | "ponytail" | "bangs";
+export type UniformVariant = "standard" | "cardigan" | "blazer" | "open-collar";
 
 // Character-creation stores these as display labels ("Twin-tails",
 // "Casual Cardigan") since that's what the UI shows; normalize to the
@@ -27,12 +27,15 @@ export function normalizeHairstyle(label: string): Hairstyle {
   if (l.includes("long")) return "long";
   if (l.includes("twin")) return "twin-tails";
   if (l.includes("undercut")) return "undercut";
+  if (l.includes("ponytail")) return "ponytail";
+  if (l.includes("bangs")) return "bangs";
   return "short";
 }
 export function normalizeUniform(label: string): UniformVariant {
   const l = label.toLowerCase();
   if (l.includes("cardigan")) return "cardigan";
   if (l.includes("blazer")) return "blazer";
+  if (l.includes("open")) return "open-collar";
   return "standard";
 }
 
@@ -109,6 +112,23 @@ function drawHairstyle(g: Phaser.GameObjects.Graphics, style: Hairstyle, accent:
       g.closePath();
       g.fillPath();
       break;
+    case "ponytail":
+      // cap on top, plus a single tail trailing off to one side — reads
+      // distinctly from twin-tails' two symmetric side pieces
+      g.beginPath();
+      g.arc(HEAD_CX, HEAD_CY, HEAD_R + 1.5, Math.PI, 0, false);
+      g.closePath();
+      g.fillPath();
+      g.fillRoundedRect(HEAD_CX + HEAD_R - 1, HEAD_CY - 4, 5, 22, 2.5);
+      break;
+    case "bangs":
+      // a fuller, rounder cap (bob-length) instead of the half-cap
+      // "short" uses — covers more of the head, no side pieces
+      g.beginPath();
+      g.arc(HEAD_CX, HEAD_CY, HEAD_R + 2.5, Math.PI * 0.9, Math.PI * 0.1, false);
+      g.closePath();
+      g.fillPath();
+      break;
   }
 }
 
@@ -136,6 +156,17 @@ function drawUniformTrim(g: Phaser.GameObjects.Graphics, uniform: UniformVariant
     case "standard":
       // small centered collar mark
       g.strokeCircle(R, torsoTop + 3, 2);
+      break;
+    case "open-collar":
+      // two loose diagonal lines, unbuttoned at the top
+      g.beginPath();
+      g.moveTo(R - 4, torsoTop);
+      g.lineTo(R - 1, torsoTop + 6);
+      g.strokePath();
+      g.beginPath();
+      g.moveTo(R + 4, torsoTop);
+      g.lineTo(R + 1, torsoTop + 6);
+      g.strokePath();
       break;
   }
 }

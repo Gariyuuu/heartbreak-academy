@@ -303,7 +303,14 @@ playable state, not a broken intermediate one.
       Phone/Save/Settings mid-fight (all reachable from the pause hub)
       silently let the dodge phase keep running behind them since 0.20.0
       shipped. See CHANGELOG 0.23.0.
-- [ ] **Phase 30+** — A broader accessibility pass beyond what's fixed so
+- [x] **Phase 30** — More character customization (2 more hairstyles —
+      `ponytail`, `bangs` — 1 more uniform variant — `open-collar` — and 3
+      more colorways — gold/rose/slate, chosen to stay visually distinct
+      from the existing four), and side story part four: a fourth Towa
+      nap spot in the Abandoned Classroom Block, placed next to the
+      room's existing nameplate mystery, with a new secret achievement
+      for finding all four. See CHANGELOG 0.24.0.
+- [ ] **Phase 31+** — A broader accessibility pass beyond what's fixed so
       far (keyboard remapping — keys are fixed, not rebindable —
       screen-reader semantics for the DOM UI layer, contrast auditing) —
       not started (see "What's Next" below)

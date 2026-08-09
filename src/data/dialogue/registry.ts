@@ -18,7 +18,7 @@ import { reinaIntro, programNoteFlavor } from "./theaterWing";
 import { kaedeGlimpse, rooftopViewFlavor } from "./rooftopGardens";
 import { akariTower, councilRulesFlavor } from "./studentCouncilTower";
 import { breakerPanelFlavor } from "./undergroundMaintenance";
-import { nameplateFlavor } from "./abandonedClassroomBlock";
+import { nameplateFlavor, towaClassroom } from "./abandonedClassroomBlock";
 import { mirrorHallSignFlavor } from "./mirrorHall";
 import { kaedeNullWing, nullWingEdgeFlavor } from "./nullWing";
 import { mikaFestival, soraFestival, festivalBoothFlavor } from "./festivalGrounds";
@@ -51,6 +51,7 @@ export const DIALOGUE_REGISTRY: Record<string, DialogueTreeDef> = {
   council_rules_flavor: councilRulesFlavor,
   breaker_panel_flavor: breakerPanelFlavor,
   nameplate_flavor: nameplateFlavor,
+  towa_classroom: towaClassroom,
   mirror_hall_sign_flavor: mirrorHallSignFlavor,
   kaede_null_wing: kaedeNullWing,
   null_wing_edge_flavor: nullWingEdgeFlavor,

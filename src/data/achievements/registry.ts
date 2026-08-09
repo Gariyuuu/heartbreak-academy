@@ -146,4 +146,15 @@ export const ACHIEVEMENTS: AchievementDef[] = [
     secret: true,
     isUnlocked: (s) => s.route.deaths >= 2,
   },
+  {
+    id: "the_whole_rotation",
+    title: "The Whole Rotation",
+    description: "Find all four of Towa's nap spots.",
+    secret: true,
+    isUnlocked: (s) =>
+      Boolean(s.flags["met_towa"]) &&
+      Boolean(s.flags["met_towa_courtyard"]) &&
+      Boolean(s.flags["met_towa_library"]) &&
+      Boolean(s.flags["met_towa_classroom"]),
+  },
 ];

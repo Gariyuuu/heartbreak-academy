@@ -55,6 +55,47 @@ semantic versioning for a pre-1.0 project.
 - Bundle is a single ~1.54MB chunk (Phaser is the bulk of it); code-splitting
   would help but wasn't a priority for this pass.
 
+## [0.24.0] — More Character Options, Side Story: Towa's Fourth Spot
+Two asks: more character-creation variety, and another beat of the side
+story that's been quietly running since the vertical slice.
+
+**Character customization, expanded.** `Hairstyle` gains `ponytail`
+(a single trailing tail, distinct from twin-tails' two symmetric side
+pieces) and `bangs` (a fuller, rounder cap — more of a bob than "short"'s
+half-cap). `UniformVariant` gains `open-collar` (two loose diagonal
+lines instead of a closed collar). `COLORWAY_HEX` gains three more:
+`gold`, `rose`, `slate` — chosen to stay visually distinct from the
+existing four, not just different hex values in the same neighborhood.
+Character creation now offers 6 hairstyles, 4 uniforms, 7 colorways, all
+of which actually render on the player sprite (not just stored and
+ignored — see 0.22.0 for why that distinction matters here specifically).
+
+**Side story, part four.** Towa (`sleepy_upperclassman`) has quietly been
+a "find me napping somewhere new" recurring character since early in the
+project — Arrival Hall, Courtyard, Literature Wing, each its own
+`met_towa*` flag and a light, deflecting joke about a "nap spot
+rotation." New fourth appearance in the Abandoned Classroom Block,
+placed next to the room's existing "smudged nameplate" sign (which
+already had its own small mystery — a name in Yuna's handwriting, in a
+room she's "never mentioned sitting in"). This one lets the joke crack
+open for exactly one real line — it's Towa's old homeroom, and they've
+"stopped keeping close track" of how long they've been coming back — before
+steering it back to the bit on purpose, matching the established voice
+rather than resolving into a full confession. New secret achievement,
+`the_whole_rotation`, for finding all four spots.
+
+Verified with Playwright: all 6 hairstyle options and 7 colorway swatches
+render in character creation; a non-default selection (Bangs + Slate)
+actually shows on the in-game sprite; the new dialogue tree's full
+first-visit sequence plays correctly and sets `met_towa_classroom`;
+`npm run validate:maps` confirms the new NPC placement doesn't break
+reachability. One non-bug worth noting: an early test run appeared to
+show a uniform-selection mismatch in a screenshot, which traced back to
+the test script clicking through multiple character-creation buttons
+without waiting for the hairstyle row's layout reflow (6 options now wrap
+to two lines) — confirmed as test flakiness, not a product bug, by
+re-running the same clicks with brief waits between them.
+
 ## [0.23.0] — Onboarding, Balance, and a Real Bug Found While Fixing It
 More direct user feedback: stuck with no idea how to progress, the first
 monster already felt too hard, and the maps/monsters needed more detail

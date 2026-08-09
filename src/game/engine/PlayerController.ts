@@ -8,6 +8,9 @@ export const COLORWAY_HEX: Record<string, number> = {
   azure: 0x5b8fe8,
   verdant: 0x6fae8f,
   violet: 0xa878e0,
+  gold: 0xe0a83e,
+  rose: 0xd6588f,
+  slate: 0x5c6b85,
 };
 
 const WALK_SPEED = 130;

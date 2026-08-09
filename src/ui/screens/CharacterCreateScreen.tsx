@@ -3,13 +3,16 @@ import { useGameStore } from "../../game/state/store";
 import type { Pronouns } from "../../game/save/schema";
 import "./CharacterCreateScreen.css";
 
-const HAIRSTYLES = ["Short", "Long", "Twin-tails", "Undercut"];
-const UNIFORMS = ["Standard", "Casual Cardigan", "Altered Blazer"];
+const HAIRSTYLES = ["Short", "Long", "Twin-tails", "Undercut", "Ponytail", "Bangs"];
+const UNIFORMS = ["Standard", "Casual Cardigan", "Altered Blazer", "Open Collar"];
 const COLORWAYS: { id: string; label: string; hex: string }[] = [
   { id: "crimson", label: "Crimson", hex: "#e86a92" },
   { id: "azure", label: "Azure", hex: "#5b8fe8" },
   { id: "verdant", label: "Verdant", hex: "#6fae8f" },
   { id: "violet", label: "Violet", hex: "#a878e0" },
+  { id: "gold", label: "Gold", hex: "#e0a83e" },
+  { id: "rose", label: "Rose", hex: "#d6588f" },
+  { id: "slate", label: "Slate", hex: "#5c6b85" },
 ];
 const PRONOUN_OPTIONS: { id: Pronouns; label: string }[] = [
   { id: "she/her", label: "She / Her" },

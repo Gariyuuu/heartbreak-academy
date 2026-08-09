@@ -48,6 +48,14 @@ export const abandonedClassroomBlock: MapDefinition = {
       ],
       encounterId: "flicker",
     },
+    {
+      id: "towa_classroom",
+      characterId: "sleepy_upperclassman",
+      col: 6,
+      row: 5,
+      facing: "up",
+      dialogueId: "towa_classroom",
+    },
   ],
   interactables: [
     {
