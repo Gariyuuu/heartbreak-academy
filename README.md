@@ -19,20 +19,23 @@ meet the 10+ target; real (procedurally synthesized) background music
 with a layered bass under the boss track; battle menus are fully
 keyboard-navigable; two real accessibility fixes (a dead flash-effects
 setting, and no way to pause mid-battle); and a full presentation pass —
-genuinely fullscreen (no letterboxing or dead space on any map/window
-size), real head+torso humanoid sprites with hairstyle/uniform
-customization that actually renders, textured/shadowed map tiles instead
-of a flat checkerboard, and faster dialogue; and a real onboarding pass —
-a How to Play screen, a first-battle tutorial primer, and the first
-enemy softened, since none of that existed before and it showed;
-character creation now offers 6 hairstyles, 4 uniforms, and 7 colorways
-(all actually rendering on the player sprite); and the recurring
-"find Towa napping somewhere new" side story has a fourth part. A broader
-accessibility pass (keyboard remapping, screen-reader semantics, contrast
-auditing) is the one item from the design doc's scope with no dedicated
-work yet (see `DEVELOPMENT_PLAN.md` for full scope and what's still
-ahead, and `CHANGELOG.md` for what's shipped so far, most recently
-`[0.24.0]`).
+genuinely fullscreen (no fixed-size letterboxed canvas), real head+torso
+humanoid sprites with hairstyle/uniform customization that actually
+renders, textured/shadowed map tiles instead of a flat checkerboard, and
+faster dialogue; and a real onboarding pass — a How to Play screen, a
+first-battle tutorial primer, and the first enemy softened, since none
+of that existed before and it showed; character creation now offers 6
+hairstyles, 4 uniforms, and 7 colorways (all actually rendering on the
+player sprite); the recurring "find Towa napping somewhere new" side
+story has a fourth part; and the overworld camera's default zoom was
+rebalanced after feedback that it ran too close — a deliberate tradeoff
+that can leave a thin strip of dead space on some wide-viewport/
+small-room combinations rather than zooming in further to eliminate it
+entirely. A broader accessibility pass (keyboard remapping,
+screen-reader semantics, contrast auditing) is the one item from the
+design doc's scope with no dedicated work yet (see `DEVELOPMENT_PLAN.md`
+for full scope and what's still ahead, and `CHANGELOG.md` for what's
+shipped so far, most recently `[0.25.0]`).
 
 ## Features
 

@@ -55,6 +55,39 @@ semantic versioning for a pre-1.0 project.
 - Bundle is a single ~1.54MB chunk (Phaser is the bulk of it); code-splitting
   would help but wasn't a priority for this pass.
 
+## [0.25.0] — Overworld Zoom Rebalanced
+
+Follow-up to 0.22.0's fullscreen fix. Making the canvas match the real
+browser window (`Phaser.Scale.RESIZE`) meant a fixed camera zoom could
+leave visible dead space around a map smaller than the viewport, so
+0.22.0 introduced a "cover" zoom — always at least as zoomed as needed to
+guarantee the map fills the screen with no dead space. On a typical wide
+desktop window, though, that cover math pushes zoom to roughly 1.7–2.3x
+for a map like Arrival Hall, and it reads as uncomfortably close rather
+than fullscreen-and-comfortable.
+
+The cover formula itself is unchanged (`max(canvasWidth/mapWidth,
+canvasHeight/mapHeight)`), but its upper clamp is lowered from 2.6 to
+1.8. This is a genuine tradeoff, not a free fix: on wide viewports paired
+with modestly-sized rooms, a thin strip of dead space (the game's dark
+`#14101c` background, not a rendering error) can now appear along one
+edge — confirmed via screenshot at 1600x900 in Arrival Hall, where it's
+a ~150px strip on the right, clearly secondary to the room itself which
+now fills the great majority of the frame at a noticeably more
+comfortable zoom than the prior 2.6 cap allowed. Two earlier candidate
+values (a 1.5 cap, then a 1.2 cap) were tried and screenshotted first —
+both produced substantially *more* dead space than 1.8, not less,
+which is the expected direction once you account for zoom and
+map-coverage being inversely related (lower zoom means each screen
+pixel covers more world space, so a fixed-size map occupies fewer
+screen pixels, not more).
+
+Verified with Playwright: build, lint, and `npm run validate:maps` all
+clean; full regression pass (movement, dialogue open/close, map
+transition, keyboard battle menu with ACT, mid-battle pause) all green
+against the dev server; screenshot at 1600x900 viewport visually
+confirmed before shipping.
+
 ## [0.24.0] — More Character Options, Side Story: Towa's Fourth Spot
 Two asks: more character-creation variety, and another beat of the side
 story that's been quietly running since the vertical slice.

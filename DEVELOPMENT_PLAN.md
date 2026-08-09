@@ -283,7 +283,8 @@ playable state, not a broken intermediate one.
       this game actually has); switched the canvas from a fixed 896x576
       (`Scale.FIT`) to `Scale.RESIZE` matching the real window, with
       `BattleScene`'s arena and `OverworldScene`'s camera zoom both made
-      dynamic so nothing letterboxes or leaves dead space; real
+      dynamic so nothing letterboxes (camera zoom's dead-space/closeness
+      tradeoff was later revisited in Phase 31); real
       head+torso humanoid sprites for the player and every named NPC,
       with hairstyle/uniform choices from character creation actually
       rendering for the first time; real map tile texture (grain, panel
@@ -310,7 +311,16 @@ playable state, not a broken intermediate one.
       nap spot in the Abandoned Classroom Block, placed next to the
       room's existing nameplate mystery, with a new secret achievement
       for finding all four. See CHANGELOG 0.24.0.
-- [ ] **Phase 31+** — A broader accessibility pass beyond what's fixed so
+- [x] **Phase 31** — Overworld zoom rebalance, direct from user feedback
+      that the standard view (0.22.0's cover-zoom fix) now felt too
+      zoomed in. Lowered the cover-zoom formula's upper clamp from 2.6 to
+      1.8, trading a thin strip of dead space on some wide-viewport/
+      small-room combinations for a noticeably more comfortable default
+      zoom. Two lower candidate clamps (1.5, then 1.2) were tried and
+      screenshotted first and both produced *more* dead space than 1.8,
+      confirming the inverse relationship between zoom and map coverage.
+      See CHANGELOG 0.25.0.
+- [ ] **Phase 32+** — A broader accessibility pass beyond what's fixed so
       far (keyboard remapping — keys are fixed, not rebindable —
       screen-reader semantics for the DOM UI layer, contrast auditing) —
       not started (see "What's Next" below)

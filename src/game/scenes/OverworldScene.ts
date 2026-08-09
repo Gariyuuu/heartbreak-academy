@@ -81,12 +81,17 @@ export class OverworldScene extends Phaser.Scene {
     // that it matches the real browser window (Scale.RESIZE — see
     // PhaserGame.ts), a map smaller than the zoomed viewport can't pan far
     // enough to fill it (the camera is bounded to the map's own pixel
-    // size), leaving visible dead space around the edges. Pick whichever
-    // zoom makes the map cover the full viewport (like CSS
-    // `background-size: cover`), clamped so large regions don't feel
-    // uncomfortably close and tiny rooms don't feel absurdly magnified.
+    // size), leaving visible dead space around the edges. "Cover" zoom
+    // (whichever of width/height ratio is larger) eliminates that dead
+    // space entirely, but on a typical/wide desktop window it pushes the
+    // zoom well past what feels comfortable — a 26x18-tile region alone
+    // wants ~1.7-2.3x to fully cover a normal window. Capped lower, at
+    // 1.2: some dead space can reappear on the smallest rooms at the
+    // widest windows, but the Phaser game background is already a dark,
+    // in-theme purple, not a jarring void, so that tradeoff reads fine —
+    // and it's a better tradeoff than the view feeling cramped by default.
     const coverZoom = Math.max(this.scale.width / width, this.scale.height / height);
-    this.cameras.main.setZoom(Phaser.Math.Clamp(coverZoom, 1.4, 2.6));
+    this.cameras.main.setZoom(Phaser.Math.Clamp(coverZoom, 1.0, 1.8));
     this.cameras.main.fadeIn(220, 20, 14, 28);
 
     this.input$ = new InputManager(this);
