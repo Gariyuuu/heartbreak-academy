@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useGameStore } from "../../game/state/store";
 import { saveManager } from "../../game/save/saveManager";
+import { TitleArtwork } from "./TitleArtwork";
 import "./TitleScreen.css";
 
 const EMBER_COLORS = ["#ffe066", "#ff6ea6", "#fff6ea"];
@@ -48,6 +49,7 @@ export function TitleScreen() {
   return (
     <div className="title-screen">
       <div className="title-bg" />
+      <TitleArtwork />
       <div className="title-embers" aria-hidden="true">
         {embers.map((e) => (
           <span
