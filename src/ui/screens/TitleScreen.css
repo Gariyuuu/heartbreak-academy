@@ -12,18 +12,64 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at 30% 20%, #392a52 0%, #14101c 55%),
-    radial-gradient(circle at 80% 80%, #33223f 0%, transparent 55%);
-  background-size: 200% 200%;
+    radial-gradient(circle at 80% 80%, #33223f 0%, transparent 55%),
+    radial-gradient(circle at 50% 100%, #241a35 0%, transparent 60%);
+  background-size: 200% 200%, 200% 200%, 100% 100%;
   animation: title-drift 18s ease-in-out infinite;
 }
 
 @keyframes title-drift {
   0%,
   100% {
-    background-position: 0% 0%, 100% 100%;
+    background-position: 0% 0%, 100% 100%, 0% 0%;
   }
   50% {
-    background-position: 20% 30%, 70% 60%;
+    background-position: 20% 30%, 70% 60%, 0% 0%;
+  }
+}
+
+.title-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  box-shadow: inset 0 0 min(18vw, 220px) rgba(0, 0, 0, 0.85);
+}
+
+.title-embers {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.title-ember {
+  position: absolute;
+  bottom: -10px;
+  border-radius: 50%;
+  opacity: 0;
+  filter: blur(0.5px);
+  box-shadow: 0 0 6px 1px currentColor;
+  animation-name: ember-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes ember-rise {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.85;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(var(--drift), -115vh);
+    opacity: 0;
   }
 }
 
@@ -31,24 +77,81 @@
   position: relative;
   z-index: 2;
   text-align: center;
+  animation: title-content-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes title-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .title-logo {
-  font-size: clamp(2.2rem, 6vw, 3.6rem);
-  letter-spacing: 0.03em;
+  font-family: "Cinzel", var(--hba-font);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 6.5vw, 3.9rem);
+  letter-spacing: 0.05em;
   margin: 0;
-  line-height: 1.1;
-  text-shadow: 0 0 30px rgba(255, 224, 102, 0.25);
+  line-height: 1.15;
+  background: linear-gradient(180deg, #fff6ea 0%, #ffe680 42%, #ffe066 60%, #ff9dc2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px rgba(255, 224, 102, 0.3)) drop-shadow(0 0 42px rgba(255, 110, 166, 0.22));
+  animation: logo-glow 5s ease-in-out infinite;
+}
+
+@keyframes logo-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 18px rgba(255, 224, 102, 0.3)) drop-shadow(0 0 42px rgba(255, 110, 166, 0.22));
+  }
+  50% {
+    filter: drop-shadow(0 0 26px rgba(255, 224, 102, 0.5)) drop-shadow(0 0 58px rgba(255, 110, 166, 0.38));
+  }
 }
 
 .title-slash {
   color: var(--hba-pink);
+  -webkit-text-fill-color: var(--hba-pink);
+}
+
+.title-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 18px 0 16px;
+  opacity: 0.85;
+}
+
+.title-divider-line {
+  width: 54px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--hba-border-soft));
+}
+
+.title-divider-line:last-child {
+  background: linear-gradient(90deg, var(--hba-border-soft), transparent);
+}
+
+.title-divider-dot {
+  width: 6px;
+  height: 6px;
+  transform: rotate(45deg);
+  background: var(--hba-border);
+  box-shadow: 0 0 8px rgba(255, 224, 102, 0.6);
 }
 
 .title-subtitle {
   color: var(--hba-text-muted);
   font-style: italic;
-  margin: 10px 0 34px;
+  margin: 0 0 34px;
   animation: subtitle-pulse 3s ease-in-out infinite;
 }
 
@@ -80,9 +183,58 @@
 }
 
 .title-btn {
+  position: relative;
+  overflow: hidden;
   padding: 12px;
   font-size: 1rem;
   letter-spacing: 0.05em;
+  opacity: 0;
+  animation: title-btn-in 0.5s ease forwards;
+}
+
+.title-btn:nth-child(1) {
+  animation-delay: 0.32s;
+}
+.title-btn:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.title-btn:nth-child(3) {
+  animation-delay: 0.48s;
+}
+.title-btn:nth-child(4) {
+  animation-delay: 0.56s;
+}
+.title-btn:nth-child(5) {
+  animation-delay: 0.64s;
+}
+
+@keyframes title-btn-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent, rgba(255, 224, 102, 0.16), transparent);
+  transform: translateX(-120%);
+  transition: transform 0.55s ease;
+  pointer-events: none;
+}
+
+.title-btn:hover:not(:disabled)::before {
+  transform: translateX(120%);
+}
+
+.title-btn:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px rgba(255, 224, 102, 0.25), 0 6px 24px rgba(255, 110, 166, 0.14);
 }
 
 .title-footer {
