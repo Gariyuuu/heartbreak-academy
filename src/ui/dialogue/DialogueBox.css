@@ -75,11 +75,16 @@
 }
 
 .dialogue-continue {
+  display: block;
+  margin-left: auto;
+  margin-top: 4px;
+  background: none;
+  border: none;
+  padding: 0;
   text-align: right;
   color: var(--hba-border);
   cursor: pointer;
   animation: bob 1s ease-in-out infinite;
-  margin-top: 4px;
 }
 
 @keyframes bob {
@@ -101,16 +106,20 @@
   gap: 4px;
 }
 
-.dialogue-choices li {
+.dialogue-choice-btn {
+  width: 100%;
+  background: none;
+  border: none;
   cursor: pointer;
   padding: 6px 10px;
   border-radius: var(--hba-radius-sm);
   color: var(--hba-text-muted);
   display: flex;
   gap: 8px;
+  text-align: left;
 }
 
-.dialogue-choices li.selected {
+.dialogue-choice-btn.selected {
   background: rgba(255, 224, 102, 0.12);
   color: var(--hba-text);
 }

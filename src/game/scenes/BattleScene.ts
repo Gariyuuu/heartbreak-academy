@@ -11,6 +11,7 @@ import { createPattern } from "../bullets/patterns";
 import type { BulletPattern } from "../bullets/Pattern";
 import { PALETTE } from "../engine/palette";
 import { useSettingsStore } from "../state/settingsStore";
+import { prefersReducedMotion } from "../../ui/a11y";
 
 // The canvas now dynamically matches the browser window (Scale.RESIZE, see
 // PhaserGame.ts) instead of a fixed 896x576, so the arena has to be
@@ -206,10 +207,10 @@ export class BattleScene extends Phaser.Scene {
       if (dmg > 0) {
         this.heart.triggerInvulnerability();
         useBattleStore.getState().hitByBullet(dmg);
-        if (useSettingsStore.getState().screenShake) {
+        if (useSettingsStore.getState().screenShake && !prefersReducedMotion()) {
           this.cameras.main.shake(160, 0.006);
         }
-        if (useSettingsStore.getState().flashEffects) {
+        if (useSettingsStore.getState().flashEffects && !prefersReducedMotion()) {
           this.cameras.main.flash(120, 255, 77, 109);
         }
       }

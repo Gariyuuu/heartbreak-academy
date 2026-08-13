@@ -73,12 +73,14 @@ export function InventoryScreen() {
                 const qty = items[id];
                 return (
                   <div key={id} className="menu-row">
-                    <span
-                      style={{ cursor: "pointer" }}
+                    <button
+                      type="button"
+                      className="menu-row-select-btn"
+                      aria-pressed={id === selected}
                       onClick={() => setSelected(id === selected ? null : id)}
                     >
                       {def.name} {qty > 1 ? `×${qty}` : ""}
-                    </span>
+                    </button>
                     <span style={{ display: "flex", gap: 6 }}>
                       {def.category === "consumable" && (
                         <button className="hba-btn" onClick={() => handleUse(id)}>
