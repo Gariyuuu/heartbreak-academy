@@ -15,6 +15,7 @@ export function BattleHud() {
   const enemyHp = useBattleStore((s) => s.enemyHp);
   const turnPhase = useBattleStore((s) => s.turnPhase);
   const spareAvailable = useBattleStore((s) => s.spareAvailable);
+  const bossPhaseIndex = useBattleStore((s) => s.phaseIndex);
   const log = useBattleStore((s) => s.log);
   const openAct = useBattleStore((s) => s.openAct);
   const openItem = useBattleStore((s) => s.openItem);
@@ -73,8 +74,23 @@ export function BattleHud() {
   const enemyFraction = Math.max(0, enemyHp / enemy.maxHp);
   const playerFraction = Math.max(0, playerHp / playerMaxHp);
 
+  const turnPhaseLabel: Record<typeof turnPhase, string> = {
+    intro: "Encounter started",
+    menu: "Choosing an action",
+    act: "Choosing an ACT",
+    item: "Choosing an item",
+    fight: "Attacking",
+    dodge: "Dodge phase — incoming attack",
+    ended: "Turn resolved",
+  };
+  const bossPhaseLabel = enemy.phases.length > 1 ? ` ${enemy.name} is in phase ${bossPhaseIndex + 1} of ${enemy.phases.length}.` : "";
+  const statusAnnouncement = `${enemy.name}: ${Math.max(0, enemyHp)}/${enemy.maxHp} HP. You: ${Math.max(0, playerHp)}/${playerMaxHp} HP. ${turnPhaseLabel[turnPhase] ?? turnPhase}.${bossPhaseLabel}${spareAvailable ? " Spare is available." : ""}`;
+
   return (
     <div className="battle-hud">
+      <div className="sr-only" role="status" aria-live="polite">
+        {statusAnnouncement}
+      </div>
       <div className="battle-hp-row">
         <div className="battle-hp-block">
           <div className="battle-hp-name">

@@ -77,6 +77,10 @@ export function DialogueBox() {
 
   const shown = text.slice(0, revealedCount);
   const doneTyping = revealedCount >= text.length;
+  // Announce the full line once per line (not per typewriter character) so
+  // reduced-motion/screen-reader users get the dialogue without a burst of
+  // per-keystroke interruptions while the text is still revealing.
+  const liveAnnouncement = currentLine.speakerName ? `${currentLine.speakerName}: ${text}` : text;
 
   return (
     <div className="dialogue-overlay">
@@ -92,26 +96,39 @@ export function DialogueBox() {
           )}
           <div className="dialogue-text">
             {shown}
-            {!doneTyping && <span className="dialogue-caret">▌</span>}
+            {!doneTyping && <span className="dialogue-caret" aria-hidden="true">▌</span>}
+          </div>
+          <div className="sr-only" aria-live="polite">
+            {doneTyping ? liveAnnouncement : ""}
           </div>
           {doneTyping && currentLine.choices && (
-            <ul className="dialogue-choices">
+            <ul className="dialogue-choices" role="list">
               {currentLine.choices.map((choice, i) => (
-                <li
-                  key={choice.text}
-                  className={i === selectedChoiceIndex ? "selected" : ""}
-                  onClick={() => dialogueEngine.advance(i)}
-                >
-                  <span className="choice-marker">{i === selectedChoiceIndex ? "▸" : ""}</span>
-                  {choice.text}
+                <li key={choice.text}>
+                  <button
+                    type="button"
+                    className={`dialogue-choice-btn ${i === selectedChoiceIndex ? "selected" : ""}`}
+                    aria-current={i === selectedChoiceIndex}
+                    onClick={() => dialogueEngine.advance(i)}
+                  >
+                    <span className="choice-marker" aria-hidden="true">
+                      {i === selectedChoiceIndex ? "▸" : ""}
+                    </span>
+                    {choice.text}
+                  </button>
                 </li>
               ))}
             </ul>
           )}
           {doneTyping && !currentLine.choices && (
-            <div className="dialogue-continue" onClick={() => dialogueEngine.advance()}>
+            <button
+              type="button"
+              className="dialogue-continue"
+              onClick={() => dialogueEngine.advance()}
+              aria-label="Continue"
+            >
               ▼
-            </div>
+            </button>
           )}
         </div>
       </div>
