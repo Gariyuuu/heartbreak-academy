@@ -74,7 +74,7 @@ export function TitleScreen() {
       <div className="hba-scanlines" />
 
       <div className="title-content">
-        <h1 className="title-logo">
+        <h1 className="title-logo fx-grain" data-text="HEART//BREAK ACADEMY">
           HEART<span className="title-slash">//</span>BREAK
           <br />
           ACADEMY

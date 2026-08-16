@@ -129,6 +129,61 @@
   -webkit-text-fill-color: var(--hba-pink);
 }
 
+/* 73 Film-Grain (text-effects.colorion.co, MIT) — analogue noise crawling
+   over the logo. Adapted as an overlay only: the existing gradient-fill
+   glow above (.title-logo, logo-glow) already owns color/background-clip,
+   so this rule adds position + a second flicker animation (combined with
+   logo-glow, since `animation` is a shorthand and would otherwise replace
+   it) and two noise layers on ::before/::after, rather than redeclaring
+   properties that would fight the gradient fill. data-text on the <h1> in
+   TitleScreen.tsx must match its flattened text for the overlay to align. */
+.title-logo.fx-grain {
+  position: relative;
+  animation: logo-glow 5s ease-in-out infinite, fx-grain-flicker 3.6s ease-in-out infinite;
+}
+.title-logo.fx-grain::before,
+.title-logo.fx-grain::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+.title-logo.fx-grain::before {
+  background-image: radial-gradient(circle, #fff 0 0.55px, transparent 0.85px), radial-gradient(circle, #000 0 0.45px, transparent 0.75px), radial-gradient(circle, #fff 0 0.4px, transparent 0.7px);
+  background-size: 3px 3px, 4px 4px, 5px 5px;
+  background-position: 0 0, 1px 2px, 2px 1px;
+  opacity: 0.42;
+  mix-blend-mode: soft-light;
+  animation: fx-grain 0.28s steps(4) infinite;
+}
+.title-logo.fx-grain::after {
+  background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, #fff 22%, transparent) 48%, transparent 100%) 0 -40% / 100% 60%;
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+  animation: fx-grain-scan 2.6s linear infinite;
+}
+@keyframes fx-grain {
+  0% { background-position: 0 0, 1px 2px, 2px 1px; }
+  25% { background-position: 2px -1px, -1px 3px, 0 2px; }
+  50% { background-position: -1px 2px, 3px 0, 1px -1px; }
+  75% { background-position: 1px 1px, -2px -1px, 3px 2px; }
+  100% { background-position: 0 0, 1px 2px, 2px 1px; }
+}
+@keyframes fx-grain-scan {
+  0% { background-position: 0 -50%; opacity: 0.15; }
+  45% { opacity: 0.6; }
+  100% { background-position: 0 160%; opacity: 0.2; }
+}
+@keyframes fx-grain-flicker {
+  0%, 100% { filter: contrast(1.04) brightness(1); }
+  32% { filter: contrast(1.14) brightness(1.05); }
+  58% { filter: contrast(0.97) brightness(0.94); }
+  76% { filter: contrast(1.08) brightness(1.02); }
+}
+
 .title-divider {
   display: flex;
   align-items: center;

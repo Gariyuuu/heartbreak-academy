@@ -55,6 +55,23 @@
   color: var(--hba-pink);
 }
 
+/* 27 Cardio (text-effects.colorion.co, MIT) — heartbeat pulse on the
+   ending title, a literal fit for a game called HEART//BREAK ACADEMY.
+   Adapted to not set color (each .ending-mood-* rule above already owns
+   it) and to glow with currentColor instead of the library's fixed
+   --ink-2, so the pulse automatically matches whichever mood color is
+   active rather than needing four separate overrides. */
+.ending-panel h1.fx-heartbeat {
+  animation: fx-heartbeat 1.4s ease-in-out infinite;
+}
+@keyframes fx-heartbeat {
+  0%, 100% { transform: scale(1); text-shadow: 0 0 0 transparent; }
+  14% { transform: scale(1.06); text-shadow: 0 0 12px color-mix(in srgb, currentColor 65%, transparent); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.08); text-shadow: 0 0 18px color-mix(in srgb, currentColor 80%, transparent); }
+  70% { transform: scale(1); text-shadow: 0 0 0 transparent; }
+}
+
 .ending-paragraph {
   color: var(--hba-text-muted);
   line-height: 1.7;
