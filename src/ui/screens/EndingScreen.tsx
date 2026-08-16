@@ -28,7 +28,7 @@ export function EndingScreen() {
     <div className={`ending-overlay ending-mood-${ending.mood}`}>
       <div className="ending-panel hba-panel">
         <p className="ending-eyebrow">THE AFTERCLASS REMEMBERS</p>
-        <h1>{ending.title}</h1>
+        <h1 className="fx-heartbeat">{ending.title}</h1>
         {ending.paragraphs.map((p, i) => (
           <p key={i} className="ending-paragraph">
             {p}

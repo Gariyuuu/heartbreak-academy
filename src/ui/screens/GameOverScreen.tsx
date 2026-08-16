@@ -53,7 +53,9 @@ export function GameOverScreen() {
   return (
     <div className="gameover-overlay">
       <div className="gameover-panel">
-        <h2>The HEART fractures.</h2>
+        <h2 className="fx-glitch" data-text="The HEART fractures.">
+          The HEART fractures.
+        </h2>
         <p>{message}</p>
         <div className="gameover-actions">
           <button className="hba-btn" onClick={handleContinue}>

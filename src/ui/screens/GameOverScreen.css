@@ -30,6 +30,50 @@
   letter-spacing: 0.04em;
 }
 
+/* 02 Glitchcore (text-effects.colorion.co, MIT) — RGB channel-split
+   glitch on the game-over line. Adapted to not set color/font (the rule
+   above already owns those) and toned down from the library's demo
+   offsets (5px/4px/3px/2px on a single 30px word) to 2px/1.5px, since
+   "The HEART fractures." is a full sentence at a smaller heading size —
+   the wider offsets read as illegible ghosting at this length. The real
+   sentence is always the base h2 text (color: var(--hba-danger), fully
+   opaque, never hidden); ::before/::after only add brief low-opacity
+   duplicate slices on top via data-text, so the DOM/AT-visible text never
+   changes. */
+.gameover-panel h2.fx-glitch {
+  position: relative;
+}
+.gameover-panel h2.fx-glitch::before,
+.gameover-panel h2.fx-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+}
+.gameover-panel h2.fx-glitch::before {
+  color: var(--ink-3);
+  clip-path: inset(0 0 55% 0);
+  animation: fx-glitch-a 2.6s steps(1) infinite;
+}
+.gameover-panel h2.fx-glitch::after {
+  color: var(--hba-blue);
+  clip-path: inset(45% 0 0 0);
+  animation: fx-glitch-b 2.6s steps(1) infinite;
+}
+@keyframes fx-glitch-a {
+  0%, 12%, 20%, 55%, 100% { transform: translate(0); opacity: 0; }
+  13% { transform: translate(-2px, -1px); opacity: 0.75; }
+  16% { transform: translate(1.5px, 0.5px); opacity: 0.75; }
+  48% { transform: translate(-1.5px, 1px); opacity: 0.75; }
+  51% { transform: translate(1px, -0.5px); opacity: 0.75; }
+}
+@keyframes fx-glitch-b {
+  0%, 14%, 22%, 60%, 100% { transform: translate(0); opacity: 0; }
+  15% { transform: translate(2px, 1px); opacity: 0.75; }
+  18% { transform: translate(-1.5px, -0.5px); opacity: 0.75; }
+  52% { transform: translate(1.5px, -1px); opacity: 0.75; }
+  56% { transform: translate(-1px, 0.5px); opacity: 0.75; }
+}
+
 .gameover-panel p {
   color: var(--hba-text-muted);
   line-height: 1.6;

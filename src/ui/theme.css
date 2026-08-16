@@ -15,6 +15,12 @@
   --hba-font: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
   --hba-radius: 14px;
   --hba-radius-sm: 8px;
+
+  /* Aliases for CSS Text Effects (text-effects.colorion.co), so copied
+     effects inherit this app's real palette instead of a foreign one. */
+  --ink: var(--hba-text);
+  --ink-2: var(--hba-border);
+  --ink-3: var(--hba-pink);
 }
 
 .hba-root {
